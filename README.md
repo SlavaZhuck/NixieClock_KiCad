@@ -1,4 +1,4 @@
-![PROJECT_PHOTO](https://github.com/AlexGyver/nixieclock/blob/master/proj_img.jpg)
+![PROJECT_PHOTO](https://sun9-21.userapi.com/bWwjce5PnHbB8VanPXkxXA7Pkjoxh6WSA_MJUg/TnIqux89CcI.jpg)
 # Часы на газоразрядных индикаторах и Arduino
 * [Описание проекта](#chapter-0)
 * [Папки проекта](#chapter-1)
