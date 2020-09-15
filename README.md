@@ -39,8 +39,6 @@
 - ИН-14
 - ИН-12
 Гербер файлы уже в архиве!  
-Список компонентов тоже есть в архиве!
-![SCHEME](https://github.com/AlexGyver/NixieClock/blob/master/schemes/scheme.png)
 
 <a id="chapter-3"></a>
 
