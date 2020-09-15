@@ -51,7 +51,7 @@
 
 <a id="chapter-3"></a>
 ## Схемы
-- Схемы на EasyEDA: https://easyeda.com/adm503/go-go
+- Схемы на EasyEDA: https://easyeda.com/adm503/nixieclock-covid-2019
 - Общая
 - ИН-14/ИН-16
 - ИН-14
