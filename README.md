@@ -50,7 +50,7 @@
 
 <a id="chapter-3"></a>
 ## Схемы
-- Схемы на EasyEDA: https://easyeda.com/beragumbo/nixieclock
+- Схемы на EasyEDA: https://easyeda.com/adm503/go-go
 - Общая
 - ИН-14/ИН-16
 - ИН-14
