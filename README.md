@@ -149,7 +149,7 @@
 - Транзистор (для звука) любой n-p-n -1шт.
 - Разъем питания -1шт.<br>
 В проекте заложена возможность установки на плату USB разъема (5 вариантов на выбор) или гнезда питания с понижающем модулем
-	 - USB: Type C 3,1 SMD DIP; <a href="https://lcsc.com/product-detail/USB-Connectors_Jing-Extension-of-the-Electronic-Co-C46391_C46391.html" target="_blank">Mini USB 5pin</a>; <a href="https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-MICRO5-9mmusb_C393940.html" target="_blank">Micro USB Type B SMD DIP</a>; USB 2,0 4PIN Type A, гнездовой разъем G54; USB 2,0 Type A гнездовой разъем 5PIN DIP вертикальный.
+	 - <a href="https://ae01.alicdn.com/kf/Hb0bd5728c4684785a299a9bf75fee4547.jpg" target="_blank">USB: Type C 3,1 SMD DIP 6pin</a>; <a href="https://lcsc.com/product-detail/USB-Connectors_Jing-Extension-of-the-Electronic-Co-C46391_C46391.html" target="_blank">Mini USB 5pin</a>; <a href="https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-MICRO5-9mmusb_C393940.html" target="_blank">Micro USB Type B SMD DIP</a>; USB 2,0 4PIN Type A, гнездовой разъем G54; USB 2,0 Type A гнездовой разъем 5PIN DIP вертикальный.
 	 - Понижающий модуль QS-1205CME-3A (DC-DC 12-24 В до 5 В 3A)
 - Кнопки тактовые 6х6 боковые (1-1825027-7; 1825027-5; 1-1825027-1; 1825027-5; 1825027-5; KLS7-TS6606-5.0-180) -3шт.
 - Модуль сенсорной кнопки TTP223 -1шт.
