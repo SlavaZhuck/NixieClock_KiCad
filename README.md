@@ -206,4 +206,4 @@ https://youtu.be/4lqGsXRB4vA
 В: Сколько стоит?  
 О: Ничего не продаю.
 ## P.S. А вот вам часы "ЛАДУШКИ" на 4 лампах под прошивку poty
-![PROJECT_PHOTO](https://sun9-45.userapi.com/impg/U2N5A5BCOv4Uk9iz5iBQKQDSGAvVGMM1ixtdlA/X3CdfCGLBJY.jpg?size=821x677&quality=96&proxy=1&sign=29db8821801edc9f435bd4a1a7e6703b.jpg)
+![PROJECT_PHOTO](https://sun9-45.userapi.com/impg/U2N5A5BCOv4Uk9iz5iBQKQDSGAvVGMM1ixtdlA/X3CdfCGLBJY.jpg?size=821x677&quality=96&proxy=1&sign=29db8821801edc9f435bd4a1a7e6703b)
