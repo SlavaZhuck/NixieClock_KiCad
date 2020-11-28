@@ -1,4 +1,4 @@
-https://youtu.be/4lqGsXRB4vA
+<iframe width="900" height="481" src="https://youtu.be/4lqGsXRB4vA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 ![PROJECT_PHOTO](https://sun9-21.userapi.com/bWwjce5PnHbB8VanPXkxXA7Pkjoxh6WSA_MJUg/TnIqux89CcI.jpg)
 # Часы на газоразрядных индикаторах и Arduino
 * [Описание проекта](#chapter-0)
