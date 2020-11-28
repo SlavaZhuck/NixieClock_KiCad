@@ -1,6 +1,4 @@
-<video>
-	<source src="https://youtu.be/4lqGsXRB4vA">
-</video>
+https://youtu.be/4lqGsXRB4vA
 ![PROJECT_PHOTO](https://sun9-21.userapi.com/bWwjce5PnHbB8VanPXkxXA7Pkjoxh6WSA_MJUg/TnIqux89CcI.jpg)
 # Часы на газоразрядных индикаторах и Arduino
 * [Описание проекта](#chapter-0)
