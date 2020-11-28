@@ -1,6 +1,5 @@
-<a href="https://youtu.be/4lqGsXRB4vA"><img src="https://sun9-29.userapi.com/impg/cvYoLpUpgVMc0LABgj05KSxFlFYCi1RnLahJSg/aorpCGpu2Qs.jpg?size=1521x889&quality=96&proxy=1&sign=aeabadccb992afac0decc25e86ff368e" alt="Видео"></a>
-https://sun9-29.userapi.com/impg/cvYoLpUpgVMc0LABgj05KSxFlFYCi1RnLahJSg/aorpCGpu2Qs.jpg?size=1521x889&quality=96&proxy=1&sign=aeabadccb992afac0decc25e86ff368e
-https://youtu.be/4lqGsXRB4vA
+<a href="https://youtu.be/4lqGsXRB4vA"  target="_blank"><img src="https://sun9-29.userapi.com/impg/cvYoLpUpgVMc0LABgj05KSxFlFYCi1RnLahJSg/aorpCGpu2Qs.jpg?size=1521x889&quality=96&proxy=1&sign=aeabadccb992afac0decc25e86ff368e" alt="Видео"></a>
+
 ![PROJECT_PHOTO](https://sun9-21.userapi.com/bWwjce5PnHbB8VanPXkxXA7Pkjoxh6WSA_MJUg/TnIqux89CcI.jpg)
 # Часы на газоразрядных индикаторах и Arduino
 * [Описание проекта](#chapter-0)
