@@ -1,7 +1,6 @@
 ВНИМАНИЕ! В модуле RTC DS3231S mini Pi обязательно соединить 3 контакт микросхемы с NC пином модуля.
 Модуль RTC DS3231M не подходит! Нужно ставить DS3231S. А лучше ставить модуль RTC DS3231SN.
-![PROJECT_PHOTO](https://sun9-21.userapi.com/bWwjce5PnHbB8VanPXkxXA7Pkjoxh6WSA_MJUg/TnIqux89CcI.jpg)
-
+![PROJECT_PHOTO](https://sun9-39.userapi.com/impg/EB4k-9Io6aMo9h3wBAlmW7Fpno_mxbgOgvH3Uw/ggbwAD4LXNA.jpg)
 <a href="https://youtu.be/4lqGsXRB4vA" target="_blank"><img src="https://sun9-29.userapi.com/impg/cvYoLpUpgVMc0LABgj05KSxFlFYCi1RnLahJSg/aorpCGpu2Qs.jpg?size=1521x889&quality=96&proxy=1&sign=aeabadccb992afac0decc25e86ff368e" alt="Видео"></a>
 
 ![PROJECT_PHOTO](https://sun9-21.userapi.com/bWwjce5PnHbB8VanPXkxXA7Pkjoxh6WSA_MJUg/TnIqux89CcI.jpg)
