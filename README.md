@@ -1,6 +1,3 @@
-ВНИМАНИЕ! В модуле RTC DS3231S mini Pi обязательно соединить 3 контакт микросхемы с NC пином модуля.<br>
-![PROJECT_PHOTO](https://sun9-61.userapi.com/impg/DjIXvA39iBTszeVjRUofA8XiRuRAfazwt0DAWQ/rRwPlqKjQL0.jpg?size=138x121&quality=96&sign=6da09cbc0506c29aee459f97345ee8fc&type=album)<br>
-Модуль RTC DS3231M не подходит! Нужно ставить DS3231S. А лучше ставить модуль RTC DS3231SN.
 <a href="https://youtu.be/4lqGsXRB4vA" target="_blank"><img src="https://sun9-29.userapi.com/impg/cvYoLpUpgVMc0LABgj05KSxFlFYCi1RnLahJSg/aorpCGpu2Qs.jpg?size=1521x889&quality=96&proxy=1&sign=aeabadccb992afac0decc25e86ff368e" alt="Видео"></a>
 
 ![PROJECT_PHOTO](https://sun9-21.userapi.com/bWwjce5PnHbB8VanPXkxXA7Pkjoxh6WSA_MJUg/TnIqux89CcI.jpg)
@@ -11,7 +8,10 @@
 * [Схемы подключения](#chapter-3)
 * [Радиодетали](#chapter-4)
 * [Как скачать и прошить](#chapter-5)
-* [FAQ](#chapter-6)
+* [FAQ от AlexGyver](#chapter-6)
+* [ОЧЕНЬ ВАЖНАЯ информация!](#chapter-7)
+* [часы "ЛАДУШКИ"v2 на 4 лампах](#chapter-8)
+* [Купить](#chapter-9)
 
 [![AlexGyver YouTube](http://alexgyver.ru/git_banner.jpg)](https://www.youtube.com/channel/UCgtAOyEQdAyjvm9ATCi_Aig?sub_confirmation=1)
 
@@ -211,9 +211,19 @@
 
 В: Сколько стоит?  
 О: Ничего не продаю.
+<a id="chapter-7"></a>
+## ОЧЕНЬ ВАЖНАЯ информация!
+ВНИМАНИЕ! В модуле RTC DS3231S mini Pi обязательно соединить 3 контакт микросхемы с NC пином модуля.<br>
+![PROJECT_PHOTO](https://sun9-61.userapi.com/impg/DjIXvA39iBTszeVjRUofA8XiRuRAfazwt0DAWQ/rRwPlqKjQL0.jpg?size=138x121&quality=96&sign=6da09cbc0506c29aee459f97345ee8fc&type=album)<br>
+Модуль RTC DS3231M не подходит! Нужно ставить DS3231S. А лучше ставить модуль RTC DS3231SN.<br>
+Если у Вас не появилось высокое напряжение на конденсаторе, значит скорее всего Вы не выполнили эти требования.
+<a id="chapter-8"></a>
 ## P.S. А вот вам часы "ЛАДУШКИ"v2 на 4 лампах под прошивку poty
 ![PROJECT_PHOTO](https://sun9-45.userapi.com/impg/U2N5A5BCOv4Uk9iz5iBQKQDSGAvVGMM1ixtdlA/X3CdfCGLBJY.jpg?size=821x677&quality=96&proxy=1&sign=29db8821801edc9f435bd4a1a7e6703b)
 - Схемы на EasyEDA: https://oshwlab.com/adm503/ladushki
 - В этих часах всё как в больших, но без секундных ламп.
 Размеры плат как у Алекса, по разъемам совместимы.
 Прошивка подходит начиная с NixieClock_PE_v2.1.0
+<a id="chapter-9"></a>
+## Купить
+Если Вы желаете приеобрести готовые платы, комплекты "плата+детали+лампы" или готовые часы, пишите в телеграм @adm503
