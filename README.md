@@ -219,7 +219,7 @@
 Если у Вас не появилось высокое напряжение на конденсаторе, значит скорее всего Вы не выполнили эти требования.
 <a id="chapter-8"></a>
 ## P.S. А вот вам часы "ЛАДУШКИ"v2 на 4 лампах под прошивку poty
-![PROJECT_PHOTO](https://sun9-45.userapi.com/impg/U2N5A5BCOv4Uk9iz5iBQKQDSGAvVGMM1ixtdlA/X3CdfCGLBJY.jpg?size=821x677&quality=96&proxy=1&sign=29db8821801edc9f435bd4a1a7e6703b)
+![PROJECT_PHOTO](https://sun9-7.userapi.com/impg/7Xobo-Spw0Qx71dley2CyZFXO8aHlWC12OrtKA/k3jESm_vkdA.jpg?size=967x797&quality=96&sign=f16734e38cd9f70bf9c18e252f35e872&type=album)
 - Схемы на EasyEDA: https://oshwlab.com/adm503/ladushki
 - В этих часах всё как в больших, но без секундных ламп.
 Размеры плат как у Алекса, по разъемам совместимы.
