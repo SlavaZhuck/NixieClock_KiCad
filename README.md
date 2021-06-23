@@ -10,7 +10,7 @@
 * [Как скачать и прошить](#chapter-5)
 * [FAQ от AlexGyver](#chapter-6)
 * [ОЧЕНЬ ВАЖНАЯ информация!](#chapter-7)
-* [часы "ЛАДУШКИ"v2 на 4 лампах](#chapter-8)
+* [Часы "ЛАДУШКИ"v2 на 4 лампах](#chapter-8)
 * [Купить](#chapter-9)
 
 [![AlexGyver YouTube](http://alexgyver.ru/git_banner.jpg)](https://www.youtube.com/channel/UCgtAOyEQdAyjvm9ATCi_Aig?sub_confirmation=1)
