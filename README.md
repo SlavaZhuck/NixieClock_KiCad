@@ -221,7 +221,6 @@
 <a id="chapter-8"></a>
 ## P.S. А вот вам часы "ЛАДУШКИ"v2 на 4 лампах под прошивку poty
 ![PROJECT_PHOTO](https://sun9-7.userapi.com/impg/7Xobo-Spw0Qx71dley2CyZFXO8aHlWC12OrtKA/k3jESm_vkdA.jpg?size=967x797&quality=96&sign=f16734e38cd9f70bf9c18e252f35e872&type=album)
-- Схемы на EasyEDA: https://oshwlab.com/adm503/ladushki
 - В этих часах всё как в больших, но без секундных ламп.
 Размеры плат как у Алекса, по разъемам совместимы.
 Прошивка подходит начиная с NixieClock_PE_v2.1.0
