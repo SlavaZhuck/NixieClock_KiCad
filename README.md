@@ -235,9 +235,18 @@
 Даже говорили что эти часы сложно запускать. На самом деле, у меня накопилась статистика. Ничего сложного нет, их влёгкую собирают люди еле умеющие паять. <br>
 Слухи пошли из-за того что иногда китайцы продают модуль точного времени DS3231M с маркировкой DS3231S, а в наших часах это кретично. Вторая проблема возникла у покупетелей плат "Ладушки" в Киеве летом 2021 года. Человек заказал у китайцев платы "Ладушки" в момент когда я проводил правки. Приношу свои извинения, я не знал что мои платы так популярны и правил прямо в открытом проекте. В итоге вышли в продажу (штучно) платы "Ладушки" v2 с двума КЗ. Ошибки исправлены в версии "Ладушки" v2.1.<br>
 Далее буду рассказывать о том с чем сталкивались люди и как проблемы решились:<br>
-1. "Ладушки" v2. Проблема1: Не горит лампа потому что с ардуины сигнал не доходит до оптопары из-за кз.<br>
-Проблема2: Не работают две кнопки управления из-за кз А7 с D9. <br>
+1. "Ладушки" v2. Проблема1: Не горит первая лампа потому что с ардуины сигнал не доходит до оптопары А1 из-за КЗ на плате.<br>
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9B%D0%B0%D0%B4%D1%83%D1%88%D0%BA%D0%B8%20v2/%D0%9A%D0%97%20D8.jpg)<br>
+Решение: <br>
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9B%D0%B0%D0%B4%D1%83%D1%88%D0%BA%D0%B8%20v2/D8.jpg)<br>
+Проблема2: Не работают две кнопки управления из-за КЗ А7 с D9. <br>
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9B%D0%B0%D0%B4%D1%83%D1%88%D0%BA%D0%B8%20v2/%D0%907%20%D0%BA%D0%BE%D1%80%D0%BE%D1%82%D0%B8%D1%82%20%D1%81%20D9.jpg)<br>
+Решение: Режем дорожки<br>
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9B%D0%B0%D0%B4%D1%83%D1%88%D0%BA%D0%B8%20v2/%D1%80%D0%B5%D0%B6%D0%B5%D0%BC%20%D0%907%20-%20D9.jpg)<br>
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9B%D0%B0%D0%B4%D1%83%D1%88%D0%BA%D0%B8%20v2/%D1%80%D0%B5%D0%B6%D0%B5%D0%BC%20%D0%907%20-%20D9_.jpg)<br>
+Дублируем дорожку проводом<br>
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9B%D0%B0%D0%B4%D1%83%D1%88%D0%BA%D0%B8%20v2/%D0%9C%D0%93%D0%A2%D0%A4%20%D0%BD%D0%B0%20%D0%907%20%D1%81%20D9.jpg)<br>
 2. Проблема: Свечение лампы ярче чем у остальных и одновременно светятся 3-4 цифры.<br>
-![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9E%D0%BF%D1%82%D0%BE%D0%BF%D0%B0%D1%80%D0%B0/IMG_20211009_125916.jpg)
-![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9E%D0%BF%D1%82%D0%BE%D0%BF%D0%B0%D1%80%D0%B0/IMG_20211009_130046.jpg)
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9E%D0%BF%D1%82%D0%BE%D0%BF%D0%B0%D1%80%D0%B0/IMG_20211009_125916.jpg)<br>
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9E%D0%BF%D1%82%D0%BE%D0%BF%D0%B0%D1%80%D0%B0/IMG_20211009_130046.jpg)<br>
 Решение: Замените оптопару на этой лампе.<br>
