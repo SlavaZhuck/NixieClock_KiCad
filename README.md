@@ -251,5 +251,5 @@
 ![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9E%D0%BF%D1%82%D0%BE%D0%BF%D0%B0%D1%80%D0%B0/IMG_20211009_130046.jpg)<br>
 Решение: Замените оптопару на этой лампе.<br>
 3. Вопрос: Возле ДС3231 нарисован проводочек со спиралькой уходящий в бесконечность отверстие посажено на 5В это для чего? (Плата COVID 2019)<br>
-![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%9E%D0%BF%D1%82%D0%BE%D0%BF%D0%B0%D1%80%D0%B0/IMG_20211009_125916.jpg)<br>
+![PROJECT_PHOTO](https://github.com/adm503/images/blob/main/NixieClock/%D0%92%D0%BE%D0%BF%D1%80%D0%BE%D1%81%D1%8B/%D0%B4%D1%80%D0%BE%D1%81%D0%B5%D0%BB%D1%8C.jpg)<br>
 Ответ: Это для дросселей разной конструкции. Для радиальных выводов - два отверстия рядом, для аксиальных - два разнесённых по плате.<br>
