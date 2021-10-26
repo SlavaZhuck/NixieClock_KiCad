@@ -231,7 +231,7 @@
 
 <a id="chapter-10"></a>
 ## Фотографии
-<a href="https://github.com/adm503/images/tree/main/NixieClock/COVID%202019%20V2" target="_blank"> Фотографии тут</a>
+<a href="https://github.com/adm503/images/blob/main/README.md"> Фотографии тут</a>
 
 <a id="chapter-11"></a>
 ## Работа над ошибками
