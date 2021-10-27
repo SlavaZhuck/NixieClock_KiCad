@@ -134,8 +134,8 @@
 
 <a id="chapter-4"></a>
 ## Радиодетали
-- <a href="https://aliexpress.ru/item/4000587268145.html?spm=a2g2w.detail.0.0.67115eefC6kyzz" target="_blank">Arduino NANO 328p</a>  -1шт.
-- DS3231S микро -1шт. (DS3231M не подходит!)
+- <a href="https://aliexpress.ru/item/4000587268145.html?spm=a2g2w.detail.0.0.67115eefC6kyzz" target="_blank">Arduino NANO 328p</a> -1шт.
+- <a href="https://aliexpress.ru/item/1005003264838795.html?algo_expid=1027afeb-6834-477a-88e4-04eca2f8b2bc-14&algo_pvid=1027afeb-6834-477a-88e4-04eca2f8b2bc&btsid=0b8b034e16353107493278362e9a7c&sku_id=12000024921801089&spm=a2g0o.productlist.0.0.6ead418bjhlCO9&ws_ab_test=searchweb0_0%2Csearchweb201602_%2Csearchweb201603_" target="_blank">DS3231S</a> микро -1шт. (DS3231M не подходит!)
 - BME280 цифровой датчик температуры, влажности и атмосферного давления. -1шт. (Рекомендуется вынести на гибком шлейфе на край корпуса для точных измерений температуры)
 - Гнёзда на плату PBS-40 (DS1023-1x40) -1шт.
 - Рейка штыревая PLS-40 (DS1021-1x40) -1шт.
