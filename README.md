@@ -223,15 +223,13 @@
 Если у Вас не появилось высокое напряжение на конденсаторе или горит только одна лампа, значит скорее всего Вы не выполнили эти требования.
 <a id="chapter-8"></a>
 ## P.S. А вот вам часы "ЛАДУШКИ"v2 на 4 лампах под прошивку poty
+Видео
+<a href="https://youtu.be/8mwN5G242v4" target="_blank"><img src="https://sun9-7.userapi.com/impg/7Xobo-Spw0Qx71dley2CyZFXO8aHlWC12OrtKA/k3jESm_vkdA.jpg?size=967x797&quality=96&sign=f16734e38cd9f70bf9c18e252f35e872&type=album" alt="Видео"></a>
 ![PROJECT_PHOTO](https://sun9-7.userapi.com/impg/7Xobo-Spw0Qx71dley2CyZFXO8aHlWC12OrtKA/k3jESm_vkdA.jpg?size=967x797&quality=96&sign=f16734e38cd9f70bf9c18e252f35e872&type=album)
 - В этих часах всё как в больших, но без секундных ламп.
 Размеры плат как у Алекса, по разъемам совместимы.
 Прошивка подходит начиная с NixieClock_PE_v2.1.0
-<a id="chapter-9"></a><br>
-Видео
-<video>
- <source src="https://youtu.be/8mwN5G242v4">
-</video>
+<a id="chapter-9"></a>
 ## Купить
 Если Вы желаете приеобрести готовые платы, комплекты "плата+детали+лампы" или готовые часы, пишите в телеграм @adm503
 
