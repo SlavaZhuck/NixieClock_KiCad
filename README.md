@@ -127,8 +127,7 @@
 - **firmware** - прошивки для Arduino
 	- NixieClock_PE_v2.0.17 - версия без поддержки платы "Ладушки"
 	- NixieClock_PE_v2.1.0 - версия для плат "COVID-19" и "Ладушки"
-	- NixieClock_PE_A_v2.0.1 - версия для платы "COVID-19" с 7-ю лампами (+ ИН-19А)
-	- <a href="https://youtu.be/yetfYi0qS0o" target="_blank">платы "COVID-19" с 7-ю лампами (+ ИН-19А)</a>
+	- NixieClock_PE_A_v2.0.1 - версия для <a href="https://youtu.be/yetfYi0qS0o" target="_blank">платы "COVID-19" с 7-ю лампами (+ ИН-19А)</a>
 - **schemes** - схемы подключения компонентов
 
 <a id="chapter-3"></a>
