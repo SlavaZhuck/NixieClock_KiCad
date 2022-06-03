@@ -5,16 +5,14 @@
 # Часы на газоразрядных индикаторах "ИН" и Arduino
 Здесь Вы можете скачать прошивку и Gerber-файлы для заказа плат.<br>
 Также Вы найдете описание проекта, фотографии, видео, инструкции и контакты для покупки печатных плат.<br>
-Плата электроники (нижняя) общая для проекта COVID-19<br>
 <a href="https://github.com/adm503/images/blob/main/NixieClock/COVID-19%20v2/ПЭ.jpg" target="_blank">Плата электроники</a> (нижняя) общая для проекта COVID-19<br>
 Плата для ламп (верхняя) на выбор:<br>
 <a href="https://github.com/adm503/images/blob/main/NixieClock/COVID-19%20v2/AB.jpg" target="_blank">Вариант А.</a> 6шт ИН-14;<br>
-Вариант B. 6шт ИН-12;<br>
 <a href="https://github.com/adm503/images/blob/main/NixieClock/COVID-19%20v2/AB.jpg" target="_blank">Вариант B.</a> 6шт ИН-12;<br>
-Вариант C. 4шт ИН-14 + 2шт ИН-16 (секунды);<br>
 <a href="https://github.com/adm503/images/blob/main/NixieClock/COVID-19%20v2/C.jpg" target="_blank">Вариант C.</a> 4шт ИН-14 + 2шт ИН-16 (секунды);<br>
 Вариант C WS2812. 4шт ИН-14 + 2шт ИН-16 (секунды) с подсветкой на ленте WS2812;<br>
 Вариант D. 4шт ИН-12 + 2шт ИН-2 (секунды);<br>
+<a href="https://github.com/adm503/images/blob/main/NixieClock/COVID-19%20v2/C.jpg" target="_blank">Вариант D.</a> 4шт ИН-12 + 2шт ИН-2 (секунды);<br>
 Вариант D WS2812. 4шт ИН-12 + 2шт ИН-2 (секунды) с подсветкой на ленте WS2812;<br>
 Вариант E. 6шт ИН-14 + ИН-19А;<br>
 Вариант F. 4шт ИН-14 + ИН-19А + 2шт ИН-16 (секунды);<br>
