@@ -272,7 +272,7 @@
 
 <a id="chapter-11"></a>
 ## Фотографии
-<a href="https://github.com/adm503/images/blob/main/README.md"> Фотографии тут</a>
+## <a href="https://github.com/adm503/images/blob/main/README.md">Фотографии</a>
 
 <a id="chapter-12"></a>
 ## Работа над ошибками
