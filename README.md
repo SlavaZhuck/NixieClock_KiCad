@@ -2,7 +2,17 @@
 <a href="https://youtu.be/4lqGsXRB4vA" target="_blank"><img src="https://sun9-29.userapi.com/impg/cvYoLpUpgVMc0LABgj05KSxFlFYCi1RnLahJSg/aorpCGpu2Qs.jpg?size=1521x889&quality=96&proxy=1&sign=aeabadccb992afac0decc25e86ff368e" alt="Видео"></a>
 
 ![PROJECT_PHOTO](https://sun9-21.userapi.com/bWwjce5PnHbB8VanPXkxXA7Pkjoxh6WSA_MJUg/TnIqux89CcI.jpg)
-# Часы на газоразрядных индикаторах и Arduino
+# Часы на газоразрядных индикаторах "ИН" и Arduino
+Здесь Вы можете скачать прошивку и Gerber-файлы для заказа плат.
+Также Вы найдете описание проекта, фотографии, видео, инструкции и контакты для покупки печатных плат.
+Плата электроники (нижняя) общая для проекта COVID-19
+Плата для ламп (верхняя) на выбор:
+Вариант А. 6шт ИН-14;
+Вариант B. 6шт ИН-12;
+Вариант C. 4шт ИН-14 + 2шт ИН-16 (секунды);
+Вариант D. 4шт ИН-12 + 2шт ИН-2 (секунды);
+Вариант E. 6шт ИН-14 + ИН-19А
+Вариант F. 4шт ИН-14 + ИН-19А + 2шт ИН-16 (секунды)
 * [Описание проекта](#chapter-0)
 * [Что здесь добавлено](#chapter-1)
 * [Папки проекта](#chapter-2)
