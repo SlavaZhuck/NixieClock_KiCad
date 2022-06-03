@@ -20,6 +20,7 @@
 <a href="https://github.com/adm503/images/blob/main/NixieClock/COVID-19%20v2/I.jpg" target="_blank">Вариант I.</a> 4шт ИН-18 + 2шт ИН-14 (секунды);<br>
 <a href="https://github.com/adm503/images/blob/main/NixieClock/COVID-19%20v2/J.jpg" target="_blank">Вариант J.</a> 4шт ИН-18;<br>
 <a href="https://github.com/adm503/images/blob/main/NixieClock/COVID-19%20v2/Ладушки.jpg" target="_blank">Вариант "Ладушки".</a> Универсальная плата под 4 лампы. Можно впаять либо 4шт ИН-14, либо 4шт ИН-12.<br>
+# Оглавление
 * [Описание проекта](#chapter-0)
 * [Что здесь добавлено](#chapter-1)
 * [Папки проекта](#chapter-2)
