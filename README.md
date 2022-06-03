@@ -32,7 +32,7 @@
 * [ОЧЕНЬ ВАЖНАЯ информация!](#chapter-8)
 * [Часы "ЛАДУШКИ"v2 на 4 лампах](#chapter-9)
 * [Купить](#chapter-10)
-* [Фотографии](#chapter-11)
+* [<a href="https://github.com/adm503/images/blob/main/README.md">Фотографии</a>](#chapter-11)
 * [Работа над ошибками](#chapter-12)
 
 [![AlexGyver YouTube](http://alexgyver.ru/git_banner.jpg)](https://www.youtube.com/channel/UCgtAOyEQdAyjvm9ATCi_Aig?sub_confirmation=1)
@@ -271,7 +271,6 @@
 Если Вы желаете приеобрести готовые платы, комплекты "плата+детали+лампы" или готовые часы, пишите в телеграм @adm503
 
 <a id="chapter-11"></a>
-## Фотографии
 ## <a href="https://github.com/adm503/images/blob/main/README.md">Фотографии</a>
 
 <a id="chapter-12"></a>
