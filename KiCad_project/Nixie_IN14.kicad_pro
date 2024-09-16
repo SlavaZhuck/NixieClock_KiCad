@@ -431,7 +431,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "my_board.kicad_pro",
+    "filename": "Nixie_IN14.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -585,7 +585,7 @@
   "sheets": [
     [
       "5fcfaad0-eb7f-4560-bb38-fd0573cc7913",
-      ""
+      "Root"
     ]
   ],
   "text_variables": {}
