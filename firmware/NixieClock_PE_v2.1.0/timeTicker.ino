@@ -12,15 +12,34 @@
 void calculateTime() {
   halfsecond = false;
   dotFlag = !dotFlag;
-  if (dotFlag) {
+  if (dotFlag) 
+  {
     dotBrightFlag = true;
     dotBrightDirection = true;
     dotBrightCounter = 0;
     secs++;
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
     newSecFlag = true;
-#endif
     if (startup_delay) startup_delay--;
+    // синхронизация с RTC в 3 часа ночи
+    {                                   
+      boolean time_sync = false;
+      DateTime now = rtc.now();
+      // do 
+      // {
+      //   if (!time_sync) 
+      //   {
+      //     time_sync = true;
+      //     secs = now.second();
+      //     mins = now.minute();
+      //     hrs = now.hour();
+      //   }
+      //   now = rtc.now();
+      // } while (secs != now.second());
+      secs = now.second();
+      mins = now.minute();
+      hrs = now.hour();
+    }
+
     if (secs > 59) {
       secs = 0;
       mins++;
@@ -52,11 +71,7 @@ void calculateTime() {
       }
     }
     
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
     if (newTimeFlag || newSecFlag) setNewTime();        // обновляем массив времени
-#else
-    if (newTimeFlag) setNewTime();        // обновляем массив времени
-#endif
 
     if (alm_request) {                                  // при смене минуты
       alm_request = false;                              // сбрасываем признак

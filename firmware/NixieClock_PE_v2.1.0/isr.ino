@@ -8,12 +8,14 @@
  */
 void RTC_handler() {
   // таймер
-  if (++SQW_counter == 4096) halfsecond = true;  // Прошло полсекунды
-  else if (SQW_counter == 8192) {     // Прошла секунда
-    SQW_counter = 0;                  // Начинаем новую секунду
-    halfsecond = true;                // Полсекундный индикатор
-  }
-  
+
+  timestamp = uint16_t(micros());
+  // if (++SQW_counter == 3400) halfsecond = true;  // Прошло полсекунды
+  // else if (SQW_counter == 6800) {     // Прошла секунда
+  //   SQW_counter = 0;                  // Начинаем новую секунду
+  //   halfsecond = true;                // Полсекундный индикатор
+  // }
+
   // бипер (замена tone() по причине перенастройки базовых таймеров для его работы)
   if (note_ip) {                      // будильник включен
     if (note_up_low) {                // положительная полуволна

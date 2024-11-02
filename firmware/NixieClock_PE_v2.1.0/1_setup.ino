@@ -18,18 +18,10 @@ void setup() {
   pinMode(KEY1, OUTPUT);
   pinMode(KEY2, OUTPUT);
   pinMode(KEY3, OUTPUT);
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
+
   pinMode(KEY4, OUTPUT);
   pinMode(KEY5, OUTPUT);
-//#else
-  // временно, для выключения неиспользуемых выводов
-//#define KEY4              0                                 // - секунды (десятки) - исправить в v.1 подключение!!!! было подключено к 6
-//#define KEY5              7                                 // - секунды (единицы)
-//  pinMode(KEY4, OUTPUT);
-//  pinMode(KEY5, OUTPUT);
-//  digitalWrite(KEY4, 0);
-//  digitalWrite(KEY5, 0);
-#endif
+
   pinMode(PIEZO, OUTPUT);
   pinMode(GEN, OUTPUT);
   pinMode(DOT, OUTPUT);
@@ -45,13 +37,14 @@ void setup() {
 
  // ---------- RTC -----------
   rtc.begin();
-  if (rtc.lostPower()) {
+  if (rtc.lostPower()) 
+  {
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   }
   pinMode(RTC_SYNC, INPUT_PULLUP);                // объявляем вход для синхросигнала RTC
                                                   // заставляем входной сигнал генерировать прерывания
-  attachInterrupt(digitalPinToInterrupt(RTC_SYNC), RTC_handler, RISING);
-  rtc.writeSqwPinMode(DS3231_SquareWave8kHz);     // настраиваем DS3231 для вывода сигнала 8кГц
+  // attachInterrupt(digitalPinToInterrupt(RTC_SYNC), RTC_handler, RISING);
+  // rtc.writeSqwPinMode(DS3231_SquareWave8kHz);     // настраиваем DS3231 для вывода сигнала 8кГц
 
   // настройка быстрого чтения аналогового порта (mode 4)
   sbi(ADCSRA, ADPS2);
@@ -62,8 +55,10 @@ void setup() {
   // ------------------
   boolean time_sync = false;
   DateTime now = rtc.now();
-  do {
-    if (!time_sync) {
+  do 
+  {
+    if (!time_sync) 
+    {
       time_sync = true;
       secs = now.second();
       mins = now.minute();
@@ -107,11 +102,7 @@ void setup() {
   r_duty = DUTY;
   setPWM(GEN, r_duty);
   
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3) 
   sendTime(hrs, mins, secs);                      // отправить время на индикаторы
-#else
-  sendTime(hrs, mins);                            // отправить время на индикаторы
-#endif
 
   changeBright();                                 // изменить яркость согласно времени суток
 
