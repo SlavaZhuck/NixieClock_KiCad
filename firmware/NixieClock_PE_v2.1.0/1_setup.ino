@@ -89,6 +89,7 @@ void setup() {
     EEPROM.put(ALMIN, 0);
     EEPROM.put(ALIFSET, false);
     EEPROM.put(BLCOLOR, 1);
+    EEPROM.put(AUTOSHOWMEAS, 1);
   }
   EEPROM.get(FLIPEFF, FLIP_EFFECT);
   EEPROM.get(LIGHTEFF, BACKL_MODE);
@@ -97,6 +98,7 @@ void setup() {
   EEPROM.get(ALMIN, alm_mins);
   EEPROM.get(ALIFSET, alm_set);
   EEPROM.get(BLCOLOR, backlColor);
+  EEPROM.get(AUTOSHOWMEAS, auto_show_measurements);
 
   // включаем ШИМ
   r_duty = DUTY;

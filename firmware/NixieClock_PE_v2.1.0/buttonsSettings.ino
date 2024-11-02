@@ -43,6 +43,9 @@ void retToTime()
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
+
+SH_MODES prev_curMode = SHATM;
+
 inline void buttonsTick() 
 {
 
@@ -59,6 +62,12 @@ inline void buttonsTick()
   btnL.tick(analog <= 860 && analog > 450);       // определение, нажата ли кнопка Up
   btnR.tick(analog <= 380 && analog > 100);       // определение, нажата ли кнопка Down
 
+  if ((prev_curMode != curMode) && (curMode == SHTIME) )
+  {
+        autoShowMeasurementsTimer.setInterval(10000);
+        autoShowMeasurementsTimer.reset();
+  }
+  prev_curMode = curMode;
   switch (curMode) 
   {
     /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -78,7 +87,13 @@ inline void buttonsTick()
  
         newTimeFlag = true;
       }
-    
+      
+      if (btnR.isHolded()) // автопоказывать измерения температуры, давления и влажности
+      {
+        auto_show_measurements = !auto_show_measurements;
+        EEPROM.put(AUTOSHOWMEAS, auto_show_measurements);
+      }
+
       if (btnL.isClick())                           // переключение эффектов подсветки
       {                       
         if (++BACKL_MODE >= 3) 
@@ -97,8 +112,15 @@ inline void buttonsTick()
         GLITCH_ALLOWED = !GLITCH_ALLOWED;
         EEPROM.put(GLEFF, GLITCH_ALLOWED);
       }
-
-      if (btnA.isClick() || btnA.isHolded()) // переход в режим отображения температуры
+      
+      if (btnA.isClick() 
+          || 
+          btnA.isHolded() 
+          || 
+          (autoShowMeasurementsTimer.isReady() 
+            &&
+          auto_show_measurements) 
+         ) // переход в режим отображения температуры
       {    
         curMode = SHTEMP;
         if (isBMEhere) 
@@ -409,4 +431,6 @@ inline void buttonsTick()
       
       break;
   }
+
+  
 }

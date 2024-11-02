@@ -23,13 +23,15 @@ timerMinim blinkTimer(500);                       // таймер моргани
 #define L16   127                                 // длительность 1/16 в мс при темпе 118 четвёртых в минуту
 timerMinim noteTimer(L16);                        // таймер длительности ноты
 timerMinim eshowTimer(300);                       // таймер демонстрации номера эффекта
-#define ALARM_SH_TIME       5000                  // время отображения установленного будильника
-#define TEMP_SH_TIME        6000                  // время показа температуры до перехода к влажности
-#define HUMIDITY_SH_TIME    6000                  // время показа влажности до перехода к давлению
-#define ATMOSPHERE_SH_TIME  6000                  // время показа давления до возврата к отображению времени
-#define MEASURE_PERIOD      2000                  // период обновления показаний
+#define ALARM_SH_TIME                 5000        // время отображения установленного будильника
+#define TEMP_SH_TIME                  2000        // время показа температуры до перехода к влажности
+#define HUMIDITY_SH_TIME              2000        // время показа влажности до перехода к давлению
+#define ATMOSPHERE_SH_TIME            2000        // время показа давления до возврата к отображению времени
+#define MEASURE_PERIOD                1000        // период обновления показаний
+#define AUTO_SHOW_MEASURE_PERIOD      10000       // период обновления показаний
 timerMinim autoTimer(ALARM_SH_TIME);              // таймер автоматического выхода из режимов
 timerMinim measurementsTimer(MEASURE_PERIOD);     // таймер обновления показаний
+timerMinim autoShowMeasurementsTimer(AUTO_SHOW_MEASURE_PERIOD);      // таймер автопоказа темпера...
 
 // кнопки
 GButton btnSet(BTN_NO_PIN, LOW_PULL, NORM_OPEN);  // инициализируем кнопку Set ("М")
@@ -156,8 +158,9 @@ enum SAVE_PARAMS: byte
                      ALHOUR,                      // (4) сохранение времени будильника/часы
                      ALMIN,                       // (5) сохранение времени будильника/минуты
                      ALIFSET,                     // (6) сохранение статуса будильника (заведён/сброшен)
-                     BLCOLOR };                   // (7) текущий цвет подсветки
-
+                     BLCOLOR,                     // (7) текущий цвет подсветки
+                     AUTOSHOWMEAS};               // (8) автоматически показывать измерения
+                     
 boolean currentDigit = false;
 int8_t changeHrs, changeMins;
 boolean lampState = false;
