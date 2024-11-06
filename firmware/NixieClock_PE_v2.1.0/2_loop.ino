@@ -2,14 +2,17 @@
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-unsigned timestamp = 0;
-unsigned timestamp_half_sec = 0;
+// unsigned current_timestamp = 0;
+
+// uint16_t timestamp = 0;
+uint16_t timestamp_half_sec = 0;
 
 
 void loop() {
-  
-  if ( uint16_t((micros()) - timestamp) >= 100)
+//  current_timestamp = uint16_t(micros());
+//  if ( (current_timestamp - timestamp) >= 50)
   {
+//    timestamp = current_timestamp;
     RTC_handler();
   }
 

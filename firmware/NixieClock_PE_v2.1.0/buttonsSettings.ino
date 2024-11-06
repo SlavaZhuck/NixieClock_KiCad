@@ -142,7 +142,7 @@ inline void buttonsTick()
         anodeStates = 0x07;
         autoTimer.setInterval(TEMP_SH_TIME);
         autoTimer.reset();
-        dotSetMode( DM_FULL );
+        dotSetMode( DM_NULL );
         chBL = true;
       }
       
