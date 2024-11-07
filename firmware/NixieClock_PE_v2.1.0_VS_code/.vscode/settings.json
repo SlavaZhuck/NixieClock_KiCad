@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "nixieclock_pe_v2.1.0.h": "c",
+        "gyverbutton.h": "c",
+        "wire.h": "c",
+        "rtclib.h": "c"
+    }
+}
