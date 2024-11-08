@@ -1,1 +1,19 @@
-/annex/objects/SHA256E-s488--e20ae3bb502d3727350961d24e1522444467fc7838d9ac1b9c27cbff14e84b32.ino
+/* check 28.10.20 
+ *  
+ */
+
+/* Обеспечение "антиотравления"
+ *  Входные параметры: нет
+ *  Выходные параметры: нет
+ */
+inline void burnIndicators() {
+  for (byte k = 0; k < BURN_LOOPS; k++) {
+    for (byte d = 0; d < 10; d++) {
+      for (byte i = 0; i < NUMTUB; i++) {
+        indiDigits[i]--;
+        if (indiDigits[i] < 0) indiDigits[i] = 9;
+      }
+      delay((unsigned long)BURN_TIME);
+    }
+  }
+}

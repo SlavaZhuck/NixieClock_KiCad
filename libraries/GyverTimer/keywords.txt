@@ -1,1 +1,28 @@
-/annex/objects/SHA256E-s625--9c1b4594ab69d73fa9caba8eb0e0d30944bc175a3bf6588a63538a85a10cef09.txt
+#######################################
+# Syntax Coloring Map For GyverTimer
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+GTimer_ms		KEYWORD1
+GTimer_us		KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setInterval		KEYWORD2
+isReady			KEYWORD2
+reset			KEYWORD2
+setMode			KEYWORD2
+start			KEYWORD2
+stop			KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+AUTO		LITERAL1
+MANUAL		LITERAL1

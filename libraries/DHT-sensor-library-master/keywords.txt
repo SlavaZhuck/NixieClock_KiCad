@@ -1,1 +1,22 @@
-/annex/objects/SHA256E-s529--053d1538f45d4e3544a642552342f98c04fb6a7ac1e129423be11ef01d5fbcc6.txt
+###########################################
+# Syntax Coloring Map For DHT-sensor-library
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+
+DHT	KEYWORD1
+
+###########################################
+# Methods and Functions (KEYWORD2)
+###########################################
+
+begin KEYWORD2
+readTemperature KEYWORD2
+convertCtoF KEYWORD2
+convertFtoC KEYWORD2
+computeHeatIndex KEYWORD2
+readHumidity KEYWORD2
+read KEYWORD2
+

@@ -1,1 +1,11 @@
-/annex/objects/SHA256E-s265--8b3bcda44ff4579baea3e00b24ec3160184b29ae83444811f075b292fbf774c5.ino
+#include "GyverTimer.h"
+GTimer_ms myTimer;               // создать таймер
+
+void setup() {
+  Serial.begin(9600);
+  myTimer.setInterval(500);   // настроить интервал
+}
+
+void loop() {
+  if (myTimer.isReady()) Serial.println("Timer!");
+}
