@@ -1,17 +1,1 @@
-# Arduino Boards
-Few Arduino boards.
-
-### Arduino Pro Mini
-Small cheap Arduino.
-
-![](img/arduino_pro_mini_kicad.png?raw=true)
-
-### Arduino Uno
-Rev. 3.
-
-![](img/arduino_uno_kicad.png?raw=true)
-
-### MKR1000
-32bit WiFi
-
-![](img/mkr1000_kicad.png?raw=true)
+/annex/objects/SHA256E-s252--513b95c0091438afc7e325dfce4ce7709297384322ce538ca275099c05f0f564.md

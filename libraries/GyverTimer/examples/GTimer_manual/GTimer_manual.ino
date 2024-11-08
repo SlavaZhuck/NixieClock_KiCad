@@ -1,18 +1,1 @@
-/*
-	Пример работы в ручном режиме (отложенный пуск)
-*/
-
-#include "GyverTimer.h"
-GTimer_ms myTimer;                // создать таймер
-
-void setup() {
-  Serial.begin(9600);
-  myTimer.setInterval(5000);   // настроить интервал 5 сек
-  myTimer.setMode(MANUAL);     // ручной режим
-  Serial.println("Start");
-  Serial.println("Wait 5 sec");
-}
-
-void loop() {
-  if (myTimer.isReady()) Serial.println("Timer!");
-}
+/annex/objects/SHA256E-s488--6d5f1532735e7667710c618d6cd88a31a12556bd8ac821f63b3bc46421e2fc2b.ino

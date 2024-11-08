@@ -1,12 +1,1 @@
-// пример с таймером на micros
-
-#include "GyverTimer.h"
-GTimer_us myTimer(1500);    // создать таймер 1500 мкс = 1,5 миллисекунды
-
-void setup() {
-  Serial.begin(9600);
-}
-
-void loop() {
-  if (myTimer.isReady()) Serial.println("Timer!");
-}
+/annex/objects/SHA256E-s282--4771c2a71d518a00080c5382aea7944e1de70d9ae7c6b55fba6d67e9af1ffd7e.ino
