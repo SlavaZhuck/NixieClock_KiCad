@@ -43,8 +43,8 @@ void setup() {
   }
   pinMode(RTC_SYNC, INPUT_PULLUP);                // объявляем вход для синхросигнала RTC
                                                   // заставляем входной сигнал генерировать прерывания
-  // attachInterrupt(digitalPinToInterrupt(RTC_SYNC), RTC_handler, RISING);
-  // rtc.writeSqwPinMode(DS3231_SquareWave8kHz);     // настраиваем DS3231 для вывода сигнала 8кГц
+  attachInterrupt(digitalPinToInterrupt(RTC_SYNC), RTC_handler, RISING);
+  rtc.writeSqwPinMode(DS3231_SquareWave8kHz);     // настраиваем DS3231 для вывода сигнала 8кГц
 
   // настройка быстрого чтения аналогового порта (mode 4)
   sbi(ADCSRA, ADPS2);
