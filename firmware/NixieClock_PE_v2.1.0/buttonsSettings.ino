@@ -111,9 +111,7 @@ inline void buttonsTick()
           || 
           btnA.isHolded() 
           || 
-          (autoShowMeasurementsTimer.isReadyDisable() 
-            &&
-          auto_show_measurements) 
+          autoShowMeasurementsTimer.isReadyDisable() 
          ) // переход в режим отображения температуры
       {    
         curMode = SHTEMP;

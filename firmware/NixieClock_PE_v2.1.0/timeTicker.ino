@@ -40,11 +40,15 @@ void calculateTime() {
       hrs = now.hour();
     }
 
-    if (secs == 20 || secs == 40 ) // каждые 20 и 40 секунд запускается таймер на автопоказ измерений
-    {      
-      autoShowMeasurementsTimer.setInterval(10);
-      autoShowMeasurementsTimer.reset();
+    if (auto_show_measurements)
+    {
+      if (secs == 20 || secs == 40 ) // каждые 20 и 40 секунд запускается таймер на автопоказ измерений
+      {      
+        autoShowMeasurementsTimer.setInterval(10);
+        autoShowMeasurementsTimer.reset();
+      }
     }
+
     if (secs > 59) {
       secs = 0;
       mins++;
