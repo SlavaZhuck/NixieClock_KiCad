@@ -28,10 +28,10 @@ timerMinim eshowTimer(300);                       // таймер демонст
 #define HUMIDITY_SH_TIME              2000        // время показа влажности до перехода к давлению
 #define ATMOSPHERE_SH_TIME            2000        // время показа давления до возврата к отображению времени
 #define MEASURE_PERIOD                1000        // период обновления показаний
-#define AUTO_SHOW_MEASURE_PERIOD      10000       // период обновления показаний
+
 timerMinim autoTimer(ALARM_SH_TIME);              // таймер автоматического выхода из режимов
 timerMinim measurementsTimer(MEASURE_PERIOD);     // таймер обновления показаний
-timerMinim autoShowMeasurementsTimer(AUTO_SHOW_MEASURE_PERIOD);      // таймер автопоказа темпера...
+timerMinim autoShowMeasurementsTimer(0);      // таймер автопоказа темпера...
 
 // кнопки
 GButton btnSet(BTN_NO_PIN, LOW_PULL, NORM_OPEN);  // инициализируем кнопку Set ("М")

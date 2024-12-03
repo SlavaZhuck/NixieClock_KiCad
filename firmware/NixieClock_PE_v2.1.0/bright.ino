@@ -103,7 +103,7 @@ void changeBright() {
   backlMaxBright = BACKL_BRIGHT;
 #endif
 
-  memset(indiDimm, indiMaxBright, NUMTUB);
+  memset((void*)indiDimm, indiMaxBright, NUMTUB);
 
   // установить режим работы секундной точки в зависимости от установок будильника
   dotSetMode( alm_set ? DOT_IN_ALARM : DOT_IN_TIME );

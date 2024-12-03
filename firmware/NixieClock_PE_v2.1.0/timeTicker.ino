@@ -20,26 +20,31 @@ void calculateTime() {
     secs++;
     newSecFlag = true;
     if (startup_delay) startup_delay--;
-    // синхронизация с RTC в 3 часа ночи
+    // синхронизация с RTC каждую секунду
     {                                   
       boolean time_sync = false;
       DateTime now = rtc.now();
-      // do 
-      // {
-      //   if (!time_sync) 
-      //   {
-      //     time_sync = true;
-      //     secs = now.second();
-      //     mins = now.minute();
-      //     hrs = now.hour();
-      //   }
-      //   now = rtc.now();
-      // } while (secs != now.second());
+      do 
+      {
+        if (!time_sync) 
+        {
+          time_sync = true;
+          secs = now.second();
+          mins = now.minute();
+          hrs = now.hour();
+        }
+        now = rtc.now();
+      } while (secs != now.second());
       secs = now.second();
       mins = now.minute();
       hrs = now.hour();
     }
 
+    if (secs == 20 || secs == 40 ) // каждые 20 и 40 секунд запускается таймер на автопоказ измерений
+    {      
+      autoShowMeasurementsTimer.setInterval(10);
+      autoShowMeasurementsTimer.reset();
+    }
     if (secs > 59) {
       secs = 0;
       mins++;
@@ -50,8 +55,8 @@ void calculateTime() {
     if (mins > 59) {
       mins = 0;
       hrs++;
-      if (hrs > 23) hrs = 0;
       changeBright();
+      if (hrs > 23) hrs = 0;
       if (hrs == 3) {                                   // синхронизация с RTC в 3 часа ночи
         boolean time_sync = false;
         DateTime now = rtc.now();

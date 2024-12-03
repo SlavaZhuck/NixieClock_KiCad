@@ -44,7 +44,7 @@ void retToTime()
  *  Выходные параметры: нет
  */
 
-SH_MODES prev_curMode = SHATM;
+
 
 inline void buttonsTick() 
 {
@@ -62,12 +62,6 @@ inline void buttonsTick()
   btnL.tick(analog <= 860 && analog > 450);       // определение, нажата ли кнопка Up
   btnR.tick(analog <= 380 && analog > 100);       // определение, нажата ли кнопка Down
 
-  if ((prev_curMode != curMode) && (curMode == SHTIME) )
-  {
-        autoShowMeasurementsTimer.setInterval(10000);
-        autoShowMeasurementsTimer.reset();
-  }
-  prev_curMode = curMode;
   switch (curMode) 
   {
     /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -79,8 +73,8 @@ inline void buttonsTick()
                                                   // для показа номера эффекта
         eshowTimer.reset();
         showFlag = true;
-        memset(indiDimm, indiMaxBright, NUMTUB);
-        memset(indiDigits, FLIP_EFFECT, NUMTUB);
+        memset((void*)indiDimm, indiMaxBright, NUMTUB);
+        memset((void*)indiDigits, FLIP_EFFECT, NUMTUB);
 
         anodeStates = 0x3F;
         newSecFlag = true;
@@ -117,7 +111,7 @@ inline void buttonsTick()
           || 
           btnA.isHolded() 
           || 
-          (autoShowMeasurementsTimer.isReady() 
+          (autoShowMeasurementsTimer.isReadyDisable() 
             &&
           auto_show_measurements) 
          ) // переход в режим отображения температуры
