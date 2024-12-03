@@ -2,7 +2,8 @@
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-void setup() {
+void setup() 
+{
   // случайное зерно для генератора случайных чисел
   randomSeed(analogRead(6) + analogRead(7));
 
@@ -80,7 +81,8 @@ void setup() {
   TCCR2A = 0b00000001;                            // phase correct
 
   // EEPROM
-  if (EEPROM.read(1023) != 103) {                 // первый запуск
+  if (EEPROM.read(1023) != 103) 
+  {                 // первый запуск
     EEPROM.put(1023, 103);
     EEPROM.put(FLIPEFF, FLIP_EFFECT);
     EEPROM.put(LIGHTEFF, BACKL_MODE);
@@ -116,7 +118,8 @@ void setup() {
 
   // инициализация BME
   isBMEhere = bme.begin();
-  if( !isBMEhere) {
+  if( !isBMEhere) 
+  {
     isBMEhere = bme.begin(BME280_ADDRESS_ALTERNATE);
   }
   if (isBMEhere ) bme.setSampling(Adafruit_BME280::MODE_NORMAL,

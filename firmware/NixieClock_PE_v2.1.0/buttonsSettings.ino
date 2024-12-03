@@ -176,8 +176,14 @@ inline void buttonsTick()
         if (btnSet.isClick()) currentDigit = !currentDigit;
         if (btnSet.isHolded()) 
         {                  // обнуление текущего рвазряда
-          if (!currentDigit) changeHrs = 0;
-          else changeMins = 0;
+          if (!currentDigit) 
+          {
+            changeHrs = 0;
+          }
+          else 
+          {
+            changeMins = 0;
+          }
           sendTime(changeHrs, changeMins, 0);
         }
 
@@ -423,6 +429,4 @@ inline void buttonsTick()
       
       break;
   }
-
-  
 }

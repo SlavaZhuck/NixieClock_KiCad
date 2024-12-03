@@ -12,9 +12,13 @@ void loop() {
   if (showFlag) 
   {                                 // отображение номера эффекта для цифр при переходе
     if(eshowTimer.isReady()) showFlag = false;
-  } else 
+  } 
+  else 
   {
-    if ((newSecFlag || newTimeFlag) && curMode == 0) flipTick();     // перелистывание цифр
+    if ((newSecFlag || newTimeFlag) && curMode == 0) 
+    {
+      flipTick();     // перелистывание цифр
+    }
   }
   dotBrightTick();                                // плавное мигание точки
   backlBrightTick();                              // плавное мигание подсветки ламп

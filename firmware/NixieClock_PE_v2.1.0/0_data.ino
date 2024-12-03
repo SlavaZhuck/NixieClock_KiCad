@@ -127,9 +127,9 @@ byte indiMaxBright = INDI_BRIGHT, backlMaxBright = BACKL_BRIGHT;
 boolean backlBrightFlag, backlBrightDirection, indiBrightDirection;
 int backlBrightCounter, indiBrightCounter;
 boolean newTimeFlag;
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
+
 boolean newSecFlag;                               // добавлен для исключения секунд из части эффектов
-#endif
+
 boolean flipIndics[NUMTUB];
 byte newTime[NUMTUB];
 boolean flipInit;
@@ -219,7 +219,8 @@ const uint8_t CRTgamma[256] PROGMEM = {
  *  Выходные параметры:
  *    byte: скорректированное значение светимости в соответствии с кривой гамма
  */
-byte getPWM_CRT(byte val) {
+byte getPWM_CRT(byte val) 
+{
   return pgm_read_byte(&(CRTgamma[val]));
 }
 
@@ -229,8 +230,10 @@ byte getPWM_CRT(byte val) {
  *    byte х: значение, в которое устанавливается pin (0 или 1)
  *  Выходные параметры: нет
  */
-void setPin(byte pin, byte x) {
-  switch (pin) {                                  // откл pwm
+void setPin(byte pin, byte x) 
+{
+  switch (pin) 
+  {                                  // откл pwm
     case 3:                                       // 2B
       bitClear(TCCR2A, COM2B1);
       break;
@@ -265,10 +268,16 @@ void setPin(byte pin, byte x) {
  *    byte duty: относительное значение длительности импульса на выбранном pin
  *  Выходные параметры: нет
  */
-void setPWM(byte pin, byte duty) {
-  if (duty == 0) setPin(pin, LOW);
-  else {
-    switch (pin) {
+void setPWM(byte pin, byte duty) 
+{
+  if (duty == 0) 
+  {
+    setPin(pin, LOW);
+  }
+  else 
+  {
+    switch (pin) 
+    {
       case 5:
         bitSet(TCCR0A, COM0B1);
         OCR0B = duty;
