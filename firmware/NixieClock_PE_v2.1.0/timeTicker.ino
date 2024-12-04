@@ -18,7 +18,6 @@ void calculateTime()
     dotBrightFlag = true;
     dotBrightDirection = true;
     dotBrightCounter = 0;
-    secs++;
     newSecFlag = true;
     if (startup_delay) startup_delay--;
     // синхронизация с RTC каждую секунду
@@ -50,46 +49,14 @@ void calculateTime()
       }
     }
 
-    if (secs > 59) 
+    if (secs >= 59) 
     {
-      secs = 0;
-      mins++;
       newTimeFlag = true;                                // флаг что нужно поменять время (минуты и часы)
       alm_request = true;                                // нужно проверить будильник
       if (mins % BURN_PERIOD == 0) burnIndicators();     // чистим чистим!
-    }
-    if (mins > 59) 
-    {
-      mins = 0;
-      hrs++;
       changeBright();
-
-      if (hrs > 23) 
-      {
-        hrs = 0;
-      }
-
-      if (hrs == 3) 
-      {                                   // синхронизация с RTC в 3 часа ночи
-        boolean time_sync = false;
-        DateTime now = rtc.now();
-        do {
-          if (!time_sync) 
-          {
-            time_sync = true;
-            secs = now.second();
-            mins = now.minute();
-            hrs = now.hour();
-          }
-          now = rtc.now();
-        } while (secs != now.second());
-        secs = now.second();
-        SQW_counter = 0;
-        mins = now.minute();
-        hrs = now.hour();
-      }
     }
-    
+
     if (newTimeFlag || newSecFlag) setNewTime();        // обновляем массив времени
 
     if (alm_request) 
