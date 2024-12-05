@@ -48,10 +48,10 @@ timerMinim eshowTimer(300);                       // таймер демонст
 #define HUMIDITY_SH_TIME              2000        // время показа влажности до перехода к давлению
 #define ATMOSPHERE_SH_TIME            2000        // время показа давления до возврата к отображению времени
 #define MEASURE_PERIOD                1000        // период обновления показаний
-#define AUTO_SHOW_MEASURE_PERIOD      10000       // период обновления показаний
+
 timerMinim autoTimer(ALARM_SH_TIME);              // таймер автоматического выхода из режимов
 timerMinim measurementsTimer(MEASURE_PERIOD);     // таймер обновления показаний
-timerMinim autoShowMeasurementsTimer(AUTO_SHOW_MEASURE_PERIOD);      // таймер автопоказа темпера...
+timerMinim autoShowMeasurementsTimer(0);      // таймер автопоказа темпера...
 
 // кнопки
 GButton btnSet(BTN_NO_PIN, LOW_PULL, NORM_OPEN);  // инициализируем кнопку Set ("М")
@@ -232,6 +232,7 @@ const uint8_t CRTgamma[256] PROGMEM = {
   241,  243,  245,  247,  249,  251,  253,  255,
 };
 
+void RTC_handler(void);
 //my variables
 uint16_t timestamp_half_sec = 0;
 
@@ -343,8 +344,8 @@ void setupUSB() { }
  *    byte seconds: двузначное число, отображаемое в разрядах секунд.
  *  Выходные параметры: нет
  */
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
-void sendTime(byte hours, byte minutes, byte seconds) {
+void sendTime(byte hours, byte minutes, byte seconds) 
+{
   indiDigits[0] = (byte)hours / 10;
   indiDigits[1] = (byte)hours % 10;
 
@@ -354,21 +355,14 @@ void sendTime(byte hours, byte minutes, byte seconds) {
   indiDigits[4] = (byte)seconds / 10;
   indiDigits[5] = (byte)seconds % 10;
 }
-#else
-void sendTime(byte hours, byte minutes) {
-  indiDigits[0] = (byte)hours / 10;
-  indiDigits[1] = (byte)hours % 10;
 
-  indiDigits[2] = (byte)minutes / 10;
-  indiDigits[3] = (byte)minutes % 10;
-}
-#endif
 
 /* Заполнение массива новых данных для работы эффектов
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-void setNewTime() {
+void setNewTime() 
+{
   newTime[0] = (byte)hrs / 10;
   newTime[1] = (byte)hrs % 10;
 
@@ -382,7 +376,8 @@ void setNewTime() {
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-void changeBright() {
+void changeBright() 
+{
 #if (NIGHT_LIGHT == 1)
   // установка яркости всех светилок от времени суток
   if ( (hrs >= NIGHT_START && hrs <= 23)
@@ -411,7 +406,8 @@ void changeBright() {
   indiBrightCounter = indiMaxBright;
 
   //change PWM to apply backlMaxBright in case of maximum bright mode
-  if (BACKL_MODE == 1) setPWM(backlColors[backlColor], backlMaxBright);
+  if (BACKL_MODE == 1) 
+	  setPWM(backlColors[backlColor], backlMaxBright);
 }
 
 
@@ -460,8 +456,8 @@ void setup() {
   }
   pinMode(RTC_SYNC, INPUT_PULLUP);                // объявляем вход для синхросигнала RTC
                                                   // заставляем входной сигнал генерировать прерывания
-  // attachInterrupt(digitalPinToInterrupt(RTC_SYNC), RTC_handler, RISING);
-  // rtc.writeSqwPinMode(DS3231_SquareWave8kHz);     // настраиваем DS3231 для вывода сигнала 8кГц
+  attachInterrupt(digitalPinToInterrupt(RTC_SYNC), RTC_handler, RISING);
+  rtc.writeSqwPinMode(DS3231_SquareWave8kHz);     // настраиваем DS3231 для вывода сигнала 8кГц
 
   // настройка быстрого чтения аналогового порта (mode 4)
   sbi(ADCSRA, ADPS2);
@@ -547,35 +543,49 @@ void setup() {
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-void backlBrightTick() {
-  switch (curMode) {
+void backlBrightTick() 
+{
+  switch (curMode) 
+  {
     case SHTIME:                                  // (0) отображение часов
-      if (chBL) {
+      if (chBL) 
+	  {
         chBL = false;
         digitalWrite(BACKLR, 0);
         digitalWrite(BACKLG, 0);
         digitalWrite(BACKLB, 0);
-        if (BACKL_MODE == 1) {
+        if (BACKL_MODE == 1) 
+		{
           setPWM(backlColors[backlColor], backlMaxBright);
-        } else if (BACKL_MODE == 2) {
+        } 
+		else if (BACKL_MODE == 2) 
+		{
           digitalWrite(backlColors[backlColor], 0);
         }
       }
-      if (BACKL_MODE == 0 && backlBrightTimer.isReady()) {
-        if (backlMaxBright > 0) {
-          if (backlBrightDirection) {
-            if (!backlBrightFlag) {
+      if (BACKL_MODE == 0 && backlBrightTimer.isReady()) 
+	  {
+        if (backlMaxBright > 0) 
+		{
+          if (backlBrightDirection) 
+		  {
+            if (!backlBrightFlag) 
+			{
               backlBrightFlag = true;
               backlBrightTimer.setInterval((float)BACKL_STEP / backlMaxBright / 2 * BACKL_TIME);
             }
             backlBrightCounter += BACKL_STEP;
-            if (backlBrightCounter >= backlMaxBright) {
+            if (backlBrightCounter >= backlMaxBright) 
+			{
               backlBrightDirection = false;
               backlBrightCounter = backlMaxBright;
             }
-          } else {
+          } 
+		  else 
+		  {
             backlBrightCounter -= BACKL_STEP;
-            if (backlBrightCounter <= BACKL_MIN_BRIGHT) {
+            if (backlBrightCounter <= BACKL_MIN_BRIGHT) 
+			{
               backlBrightDirection = true;
               backlBrightCounter = BACKL_MIN_BRIGHT;
               backlBrightTimer.setInterval(BACKL_PAUSE);
@@ -583,7 +593,9 @@ void backlBrightTick() {
             }
           }
           setPWM(backlColors[backlColor], getPWM_CRT(backlBrightCounter));
-        } else {
+        } 
+		else 
+		{
           digitalWrite(backlColors[backlColor], 0);
         }
       }
@@ -592,14 +604,16 @@ void backlBrightTick() {
     case SETTIME:                                 // (1) установка часов
     case SHALARM:                                 // (2) отображение времени будильника (5 сек)
     case SETALARM:                                // (3) установка времени будильника
-      if (chBL) {
+      if (chBL) 
+	  {
         chBL = false;
         digitalWrite(backlColors[backlColor], 0);
       }
       break;
     
     case SHTEMP:                                  // (4) отображение температуры (5 сек)
-      if (chBL) {
+      if (chBL) 
+	  {
         chBL = false;
         setPWM(BACKLR, getPWM_CRT(backlMaxBright / 2));
         digitalWrite(BACKLG, 0);
@@ -607,7 +621,8 @@ void backlBrightTick() {
       }
       break;
     case SHHUM:                                   // (5) отображение влажности (5 сек)
-      if (chBL) {
+      if (chBL) 
+	  {
         chBL = false;
         setPWM(BACKLB, getPWM_CRT(backlMaxBright / 2));
         digitalWrite(BACKLG, 0);
@@ -615,7 +630,8 @@ void backlBrightTick() {
       }
       break;
     case SHATM:                                   // (6) отображение атмосферного давления (5 сек)
-      if (chBL) {
+      if (chBL) 
+		  {
         chBL = false;
         setPWM(BACKLG, getPWM_CRT(backlMaxBright / 2));
         digitalWrite(BACKLR, 0);
@@ -627,6 +643,10 @@ void backlBrightTick() {
 
 
 
+/* Проигрывание мелодии для будильника (часть, работающая в основном коде)
+ *  Входные параметры: нет
+ *  Выходные параметры: нет
+ */
 inline void beeper() {
   // бипер
   if (alm_flag) {
@@ -669,6 +689,7 @@ inline void beeper() {
     }
   }
 }
+
 /* Поведение отображаемых значений в режимах установки
  *  Входные параметры: нет
  *  Выходные параметры: нет
@@ -733,12 +754,6 @@ inline void buttonsTick()
   btnL.tick(analog <= 860 && analog > 450);       // определение, нажата ли кнопка Up
   btnR.tick(analog <= 380 && analog > 100);       // определение, нажата ли кнопка Down
 
-  if ((prev_curMode != curMode) && (curMode == SHTIME) )
-  {
-        autoShowMeasurementsTimer.setInterval(10000);
-        autoShowMeasurementsTimer.reset();
-  }
-  prev_curMode = curMode;
   switch (curMode) 
   {
     /*------------------------------------------------------------------------------------------------------------------------------*/
@@ -788,9 +803,7 @@ inline void buttonsTick()
           || 
           btnA.isHolded() 
           || 
-          (autoShowMeasurementsTimer.isReady() 
-            &&
-          auto_show_measurements) 
+          autoShowMeasurementsTimer.isReadyDisable() 
          ) // переход в режим отображения температуры
       {    
         curMode = SHTEMP;
@@ -855,8 +868,14 @@ inline void buttonsTick()
         if (btnSet.isClick()) currentDigit = !currentDigit;
         if (btnSet.isHolded()) 
         {                  // обнуление текущего рвазряда
-          if (!currentDigit) changeHrs = 0;
-          else changeMins = 0;
+          if (!currentDigit) 
+          {
+            changeHrs = 0;
+          }
+          else 
+          {
+            changeMins = 0;
+          }
           sendTime(changeHrs, changeMins, 0);
         }
 
@@ -1102,8 +1121,6 @@ inline void buttonsTick()
       
       break;
   }
-
-  
 }
 
 
@@ -1199,111 +1216,126 @@ inline void dotBrightTick() {
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-inline void flipTick() {
-  if (FLIP_EFFECT == FM_NULL) {
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
+inline void flipTick() 
+{
+  if (FLIP_EFFECT == FM_NULL) 
+  {
     sendTime(hrs, mins, secs);
     newTimeFlag = false;
     newSecFlag = false;
-#else
-    sendTime(hrs, mins);
-    newTimeFlag = false;
-#endif
   }
-  else if (FLIP_EFFECT == FM_SMOOTH) {
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
-    if (newTimeFlag) {                             // штатная обработка эффекта
-    if (newSecFlag) {                              // если изменились секунды во время эффекта - меняем их отображение
+  else if (FLIP_EFFECT == FM_SMOOTH) 
+  {
+    if (newTimeFlag) 
+    {                             // штатная обработка эффекта
+      if (newSecFlag) 
+      {                              // если изменились секунды во время эффекта - меняем их отображение
+        newSecFlag = false;                           // поступаем с секундами также, как для эффекта = 0
+        indiDigits[4] = (byte)secs / 10;
+        indiDigits[5] = (byte)secs % 10;
+      }
+      if (!flipInit) 
+      {
+        flipInit = true;
+        flipTimer.setInterval((unsigned long)FLIP_SPEED[FLIP_EFFECT]);
+        flipTimer.reset();
+        indiBrightDirection = false;                 // задаём направление
+        // запоминаем, какие цифры поменялись и будем менять их яркость
+        for (byte i = 0; i < NUMTUB; i++) 
+        {
+          if (indiDigits[i] != newTime[i]) flipIndics[i] = true;
+          else flipIndics[i] = false;
+        }
+      }
+      if (flipTimer.isReady()) 
+      {
+        if (!indiBrightDirection) 
+        {
+          indiBrightCounter--;                        // уменьшаем яркость
+          if (indiBrightCounter <= 0) 
+          {               // если яркость меньше нуля
+            indiBrightDirection = true;               // меняем направление изменения
+            indiBrightCounter = 0;                    // обнуляем яркость
+            sendTime(hrs, mins, secs);                // меняем цифры
+          }
+        } 
+        else 
+        {
+          indiBrightCounter++;                        // увеличиваем яркость
+          if (indiBrightCounter >= indiMaxBright) {   // достигли предела
+            indiBrightDirection = false;              // меняем направление
+            indiBrightCounter = indiMaxBright;        // устанавливаем максимум
+            // выходим из цикла изменения
+            flipInit = false;
+            newTimeFlag = false;
+          }
+        }
+                                                      // применяем яркость
+        for (byte i = 0; i < NUMTUB; i++) if (flipIndics[i]) indiDimm[i] = indiBrightCounter;
+      }
+    } 
+    else if (newSecFlag) 
+    {                        // если минуты не поменялись, но поменялись секунды
       newSecFlag = false;                           // поступаем с секундами также, как для эффекта = 0
       indiDigits[4] = (byte)secs / 10;
       indiDigits[5] = (byte)secs % 10;
     }
-#endif
-    if (!flipInit) {
-      flipInit = true;
-      flipTimer.setInterval((unsigned long)FLIP_SPEED[FLIP_EFFECT]);
-      flipTimer.reset();
-      indiBrightDirection = false;                 // задаём направление
-      // запоминаем, какие цифры поменялись и будем менять их яркость
-      for (byte i = 0; i < NUMTUB; i++) {
-        if (indiDigits[i] != newTime[i]) flipIndics[i] = true;
-        else flipIndics[i] = false;
-      }
-    }
-    if (flipTimer.isReady()) {
-      if (!indiBrightDirection) {
-        indiBrightCounter--;                        // уменьшаем яркость
-        if (indiBrightCounter <= 0) {               // если яркость меньше нуля
-          indiBrightDirection = true;               // меняем направление изменения
-          indiBrightCounter = 0;                    // обнуляем яркость
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
-          sendTime(hrs, mins, secs);                // меняем цифры
-#else
-          sendTime(hrs, mins);
-#endif
-        }
-      } else {
-        indiBrightCounter++;                        // увеличиваем яркость
-        if (indiBrightCounter >= indiMaxBright) {   // достигли предела
-          indiBrightDirection = false;              // меняем направление
-          indiBrightCounter = indiMaxBright;        // устанавливаем максимум
-          // выходим из цикла изменения
-          flipInit = false;
-          newTimeFlag = false;
-        }
-      }
-                                                    // применяем яркость
-      for (byte i = 0; i < NUMTUB; i++) if (flipIndics[i]) indiDimm[i] = indiBrightCounter;
-    }
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
-    } else if (newSecFlag) {                        // если минуты не поменялись, но поменялись секунды
-      newSecFlag = false;                           // поступаем с секундами также, как для эффекта = 0
-      indiDigits[4] = (byte)secs / 10;
-      indiDigits[5] = (byte)secs % 10;
-    }
-#endif
   }
-  else if (FLIP_EFFECT == FM_LIST) {
-    if (!flipInit) {
+  else if (FLIP_EFFECT == FM_LIST) 
+  {
+    if (!flipInit) 
+    {
       flipInit = true;
       flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
                                                     // запоминаем, какие цифры поменялись и будем менять их
-      for (byte i = 0; i < NUMTUB; i++) {
-        if (indiDigits[i] != newTime[i]) flipIndics[i] = true;
-        else flipIndics[i] = false;
+      for (byte i = 0; i < NUMTUB; i++) 
+      {
+        if (indiDigits[i] != newTime[i]) 
+          flipIndics[i] = true;
+        else 
+          flipIndics[i] = false;
       }
     }
 
-    if (flipTimer.isReady()) {
+    if (flipTimer.isReady()) 
+    {
       byte flipCounter = 0;
-      for (byte i = 0; i < NUMTUB; i++) {
-        if (flipIndics[i]) {
+      for (byte i = 0; i < NUMTUB; i++) 
+      {
+        if (flipIndics[i]) 
+        {
           indiDigits[i]--;
           if (indiDigits[i] < 0) indiDigits[i] = 9;
           if (indiDigits[i] == newTime[i]) flipIndics[i] = false;
-        } else {
+        } 
+        else 
+        {
           flipCounter++;                            // счётчик цифр, которые не надо менять
         }
       }
-      if (flipCounter == NUMTUB) {                  // если ни одну из 6 цифр менять не нужно
+      if (flipCounter == NUMTUB) 
+      {                  // если ни одну из 6 цифр менять не нужно
         // выходим из цикла изменения
         flipInit = false;
         newTimeFlag = false;
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
         newSecFlag = false;
-#endif
       }
     }
   }
-  else if (FLIP_EFFECT == FM_CATHODE) {
-    if (!flipInit) {
+  else if (FLIP_EFFECT == FM_CATHODE) 
+  {
+    if (!flipInit) 
+    {
       flipInit = true;
       flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
                                                     // запоминаем, какие цифры поменялись и будем менять их
-      for (byte i = 0; i < NUMTUB; i++) {
-        if (indiDigits[i] != newTime[i]) {
+      for (byte i = 0; i < NUMTUB; i++) 
+      {
+        if (indiDigits[i] != newTime[i]) 
+        {
           flipIndics[i] = true;
-          for (byte c = 0; c < 10; c++) {
+          for (byte c = 0; c < 10; c++) 
+          {
             if (cathodeMask[c] == indiDigits[i]) startCathode[i] = c;
             if (cathodeMask[c] == newTime[i]) endCathode[i] = c;
           }
@@ -1312,180 +1344,203 @@ inline void flipTick() {
       }
     }
 
-    if (flipTimer.isReady()) {
+    if (flipTimer.isReady()) 
+    {
       byte flipCounter = 0;
-      for (byte i = 0; i < NUMTUB; i++) {
-        if (flipIndics[i]) {
-          if (startCathode[i] > endCathode[i]) {
+      for (byte i = 0; i < NUMTUB; i++) 
+      {
+        if (flipIndics[i]) 
+        {
+          if (startCathode[i] > endCathode[i]) 
+          {
             startCathode[i]--;
             indiDigits[i] = cathodeMask[startCathode[i]];
-          } else if (startCathode[i] < endCathode[i]) {
+          } 
+          else if (startCathode[i] < endCathode[i]) 
+          {
             startCathode[i]++;
             indiDigits[i] = cathodeMask[startCathode[i]];
-          } else {
+          } 
+          else 
+          {
             flipIndics[i] = false;
           }
-        } else {
+        } 
+        else 
+        {
           flipCounter++;
         }
       }
-      if (flipCounter == NUMTUB) {                  // если ни одну из 6 цифр менять не нужно
+      if (flipCounter == NUMTUB) 
+      {                  // если ни одну из 6 цифр менять не нужно
         // выходим из цикла изменения
         flipInit = false;
         newTimeFlag = false;
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
         newSecFlag = false;
-#endif
       }
     }
   }
 // --- train --- //
-  else if (FLIP_EFFECT == FM_TRAIN) {
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
-    if (newTimeFlag) {                             // штатная обработка эффекта
-#endif
-    if (!flipInit) {
-      flipInit = true;
-      currentLamp = 0;
-      trainLeaving = true;
-      flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
-      //flipTimer.reset();
-    }
-    if (flipTimer.isReady()) {
-      if (trainLeaving) {
-        for (byte i = NUMTUB-1; i > currentLamp; i--) {
-          indiDigits[i] = indiDigits[i-1];
+  else if (FLIP_EFFECT == FM_TRAIN) 
+  {
+    if (newTimeFlag) 
+    {                             // штатная обработка эффекта
+      if (!flipInit) 
+      {
+        flipInit = true;
+        currentLamp = 0;
+        trainLeaving = true;
+        flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
+        //flipTimer.reset();
+      }
+      if (flipTimer.isReady()) 
+      {
+        if (trainLeaving) 
+        {
+          for (byte i = NUMTUB-1; i > currentLamp; i--) 
+          {
+            indiDigits[i] = indiDigits[i-1];
+          }
+          anodeStates &= ~(1<<currentLamp);
+          currentLamp++;
+          if (currentLamp >= NUMTUB) 
+          {
+            trainLeaving = false;                     //coming
+            currentLamp = 0;
+          }
         }
-        anodeStates &= ~(1<<currentLamp);
-        currentLamp++;
-        if (currentLamp >= NUMTUB) {
-          trainLeaving = false;                     //coming
-          currentLamp = 0;
+        else 
+        {                                        //trainLeaving == false
+          for (byte i = currentLamp; i > 0; i--) 
+          {
+            indiDigits[i] = indiDigits[i-1];
+          }
+          indiDigits[0] = newTime[NUMTUB-1-currentLamp];
+          anodeStates |= 1<<currentLamp;
+          currentLamp++;
+          if (currentLamp >= NUMTUB) 
+          {
+            flipInit = false;
+            newTimeFlag = false;
+          }
         }
       }
-      else {                                        //trainLeaving == false
-        for (byte i = currentLamp; i > 0; i--) {
-          indiDigits[i] = indiDigits[i-1];
-        }
-        indiDigits[0] = newTime[NUMTUB-1-currentLamp];
-        anodeStates |= 1<<currentLamp;
-        currentLamp++;
-        if (currentLamp >= NUMTUB) {
-          flipInit = false;
-          newTimeFlag = false;
-        }
-      }
-    }
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
-    } else if (newSecFlag) {                        // если минуты не поменялись, но поменялись секунды
+    } 
+    else if (newSecFlag) 
+    {                        // если минуты не поменялись, но поменялись секунды
       newSecFlag = false;                           // поступаем с секундами также, как для эффекта = 0
       indiDigits[4] = (byte)secs / 10;
       indiDigits[5] = (byte)secs % 10;
     }
-#endif
   }
 
 // --- elastic band --- //
-  else if (FLIP_EFFECT == FM_ELASTIC) {
-    if (newTimeFlag) {                             // штатная обработка эффекта
-
-    if (!flipInit) {
-      flipInit = true;
-      flipEffectStages = 0;
-      flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
-      // flipTimer.reset();
-    }
-    if (flipTimer.isReady()) {
-      switch (flipEffectStages++) {
-        case 1:
-        case 3:
-        case 6:
-        case 10:
-        case 15:
-        case 21:
-          anodeStates &= ~(1<<5);
-          break;
-        case 2:
-        case 5:
-        case 9:
-        case 14:
-        case 20:
-          anodeStates &= ~(1<<4); indiDigits[5] = indiDigits[4]; anodeStates |= 1<<5;
-          break;
-        case 4:
-        case 8:
-        case 13:
-        case 19:
-          anodeStates &= ~(1<<3); indiDigits[4] = indiDigits[3]; anodeStates |= 1<<4;
-          break;
-        case 7:
-        case 12:
-        case 18:
-          anodeStates &= ~(1<<2); indiDigits[3] = indiDigits[2]; anodeStates |= 1<<3;
-          break;
-        case 11:
-        case 17:
-          anodeStates &= ~(1<<1); indiDigits[2] = indiDigits[1]; anodeStates |= 1<<2;
-          break;
-        case 16:
-          anodeStates &= ~(1<<0); indiDigits[1] = indiDigits[0]; anodeStates |= 1<<1;
-          break;
-        case 22:
-          indiDigits[0] = newTime[5]; anodeStates |= 1<<0;
-          break;
-        case 23:
-        case 29:
-        case 34:
-        case 38:
-        case 41:
-          anodeStates &= ~(1<<0); indiDigits[1] = indiDigits[0]; anodeStates |= 1<<1;
-          break;
-        case 24:
-        case 30:
-        case 35:
-        case 39:
-          anodeStates &= ~(1<<1); indiDigits[2] = indiDigits[1]; anodeStates |= 1<<2;
-          break;
-        case 25:
-        case 31:
-        case 36:
-          anodeStates &= ~(1<<2); indiDigits[3] = indiDigits[2]; anodeStates |= 1<<3;
-          break;
-        case 26:
-        case 32:
-          anodeStates &= ~(1<<3); indiDigits[4] = indiDigits[3]; anodeStates |= 1<<4;
-          break;
-        case 27:
-          anodeStates &= ~(1<<4); indiDigits[5] = indiDigits[4]; anodeStates |= 1<<5;
-          break;
-        case 28:
-          indiDigits[0] = newTime[4]; anodeStates |= 1<<0;
-          break;
-        case 33:
-          indiDigits[0] = newTime[3]; anodeStates |= 1<<0;
-          break;
-        case 37:
-          indiDigits[0] = newTime[2]; anodeStates |= 1<<0;
-          break;
-        case 40:
-          indiDigits[0] = newTime[1]; anodeStates |= 1<<0;
-          break;        
-        case 42:
-          indiDigits[0] = newTime[0]; anodeStates |= 1<<0;
-          break;
-        case 43:
-          flipInit = false;
-          newTimeFlag = false;
+  else if (FLIP_EFFECT == FM_ELASTIC) 
+  {
+    if (newTimeFlag) 
+    {                             // штатная обработка эффекта
+      if (!flipInit) 
+      {
+        flipInit = true;
+        flipEffectStages = 0;
+        flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
+        // flipTimer.reset();
       }
-    }
-    } else if (newSecFlag) {                        // если минуты не поменялись, но поменялись секунды
+      if (flipTimer.isReady()) 
+      {
+        switch (flipEffectStages++) 
+        {
+          case 1:
+          case 3:
+          case 6:
+          case 10:
+          case 15:
+          case 21:
+            anodeStates &= ~(1<<5);
+            break;
+          case 2:
+          case 5:
+          case 9:
+          case 14:
+          case 20:
+            anodeStates &= ~(1<<4); indiDigits[5] = indiDigits[4]; anodeStates |= 1<<5;
+            break;
+          case 4:
+          case 8:
+          case 13:
+          case 19:
+            anodeStates &= ~(1<<3); indiDigits[4] = indiDigits[3]; anodeStates |= 1<<4;
+            break;
+          case 7:
+          case 12:
+          case 18:
+            anodeStates &= ~(1<<2); indiDigits[3] = indiDigits[2]; anodeStates |= 1<<3;
+            break;
+          case 11:
+          case 17:
+            anodeStates &= ~(1<<1); indiDigits[2] = indiDigits[1]; anodeStates |= 1<<2;
+            break;
+          case 16:
+            anodeStates &= ~(1<<0); indiDigits[1] = indiDigits[0]; anodeStates |= 1<<1;
+            break;
+          case 22:
+            indiDigits[0] = newTime[5]; anodeStates |= 1<<0;
+            break;
+          case 23:
+          case 29:
+          case 34:
+          case 38:
+          case 41:
+            anodeStates &= ~(1<<0); indiDigits[1] = indiDigits[0]; anodeStates |= 1<<1;
+            break;
+          case 24:
+          case 30:
+          case 35:
+          case 39:
+            anodeStates &= ~(1<<1); indiDigits[2] = indiDigits[1]; anodeStates |= 1<<2;
+            break;
+          case 25:
+          case 31:
+          case 36:
+            anodeStates &= ~(1<<2); indiDigits[3] = indiDigits[2]; anodeStates |= 1<<3;
+            break;
+          case 26:
+          case 32:
+            anodeStates &= ~(1<<3); indiDigits[4] = indiDigits[3]; anodeStates |= 1<<4;
+            break;
+          case 27:
+            anodeStates &= ~(1<<4); indiDigits[5] = indiDigits[4]; anodeStates |= 1<<5;
+            break;
+          case 28:
+            indiDigits[0] = newTime[4]; anodeStates |= 1<<0;
+            break;
+          case 33:
+            indiDigits[0] = newTime[3]; anodeStates |= 1<<0;
+            break;
+          case 37:
+            indiDigits[0] = newTime[2]; anodeStates |= 1<<0;
+            break;
+          case 40:
+            indiDigits[0] = newTime[1]; anodeStates |= 1<<0;
+            break;        
+          case 42:
+            indiDigits[0] = newTime[0]; anodeStates |= 1<<0;
+            break;
+          case 43:
+            flipInit = false;
+            newTimeFlag = false;
+        }
+      }
+    } 
+    else if (newSecFlag) 
+    {                        // если минуты не поменялись, но поменялись секунды
       newSecFlag = false;                           // поступаем с секундами также, как для эффекта = 0
       indiDigits[4] = (byte)secs / 10;
       indiDigits[5] = (byte)secs % 10;
     }
-
   }
 }
+
 
 /* check 28.10.20 
  *  
@@ -1544,21 +1599,38 @@ inline void glitchTick() {
  *  Выходные параметры: нет
  */
 void RTC_handler() {
-
+  // таймер
+  if (++SQW_counter == 4096) 
+  {
+    halfsecond = true;  // Прошло полсекунды
+  }
+  else if (SQW_counter == 8192) 
+  {     // Прошла секунда
+    SQW_counter = 0;                  // Начинаем новую секунду
+    halfsecond = true;                // Полсекундный индикатор
+  }
+  
   // бипер (замена tone() по причине перенастройки базовых таймеров для его работы)
-  if (note_ip) {                      // будильник включен
-    if (note_up_low) {                // положительная полуволна
-      if (++note_count >= NotePrescalerHigh[note_num]) {
+  if (note_ip) 
+  {                      // будильник включен
+    if (note_up_low) 
+    {                // положительная полуволна
+      if (++note_count >= NotePrescalerHigh[note_num]) 
+      {
                                       // достигли длительности положительной полуволны
         note_up_low = false;          // переходим на отрицательную полуволну
         note_count = 0;               // сбрасываем счётчик
         bitWrite(PORTD, PIEZO, 0);    // переводим порт в низкое состояние
       }
-    } else {                          // отрицательная полуволна
-      if (++note_count >= NotePrescalerLow[note_num]) {
+    } 
+    else 
+    {                          // отрицательная полуволна
+      if (++note_count >= NotePrescalerLow[note_num]) 
+      {
                                       // достигли длительности отрицательной полуволны
         note_count = 0;               // сбрасываем счётчик
-        if (NotePrescalerHigh[note_num]) {
+        if (NotePrescalerHigh[note_num]) 
+        {
                                       // при ненулевой длительности положительной полуволны
           note_up_low = true;         // переходим на положительную полуволну
           bitWrite(PORTD, PIEZO, 1);  // переводим порт в высокое состояние
@@ -1571,12 +1643,14 @@ void RTC_handler() {
   if (indiCounter[curIndi] >= indiDimm[curIndi])  // если достигли порога диммирования
     setPin(opts[curIndi], 0);         // выключить текущий индикатор
 
-  if (indiCounter[curIndi] > 25) {    // достигли порога в 25 единиц
+  if (indiCounter[curIndi] > 25) 
+  {    // достигли порога в 25 единиц
     indiCounter[curIndi] = 0;         // сброс счетчика лампы
     if (++curIndi >= NUMTUB) curIndi = 0;  // смена лампы закольцованная
 
     // отправить цифру из массива indiDigits согласно типу лампы
-    if (indiDimm[curIndi] > 0) {
+    if (indiDimm[curIndi] > 0) 
+    {
       byte thisDig = digitMask[indiDigits[curIndi]];
       setPin(DECODER3, bitRead(thisDig, 0));
       setPin(DECODER1, bitRead(thisDig, 1));
@@ -1598,7 +1672,8 @@ void RTC_handler() {
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-void calculateTime() {
+void calculateTime() 
+{
   halfsecond = false;
   dotFlag = !dotFlag;
   if (dotFlag) 
@@ -1606,76 +1681,66 @@ void calculateTime() {
     dotBrightFlag = true;
     dotBrightDirection = true;
     dotBrightCounter = 0;
-    secs++;
     newSecFlag = true;
     if (startup_delay) startup_delay--;
-    // синхронизация с RTC в 3 часа ночи
+    // синхронизация с RTC каждую секунду
     {                                   
-      // boolean time_sync = false;
+      boolean time_sync = false;
       DateTime now = rtc.now();
-      // do 
-      // {
-      //   if (!time_sync) 
-      //   {
-      //     time_sync = true;
-      //     secs = now.second();
-      //     mins = now.minute();
-      //     hrs = now.hour();
-      //   }
-      //   now = rtc.now();
-      // } while (secs != now.second());
+      do 
+      {
+        if (!time_sync) 
+        {
+          time_sync = true;
+          secs = now.second();
+          mins = now.minute();
+          hrs = now.hour();
+        }
+        now = rtc.now();
+      } while (secs != now.second());
       secs = now.second();
       mins = now.minute();
       hrs = now.hour();
     }
 
-    if (secs > 59) {
-      secs = 0;
-      mins++;
+    if (auto_show_measurements)
+    {
+      if (secs == 20 || secs == 40 ) // каждые 20 и 40 секунд запускается таймер на автопоказ измерений
+      {      
+        autoShowMeasurementsTimer.setInterval(10);
+        autoShowMeasurementsTimer.reset();
+      }
+    }
+
+    if (secs >= 59) 
+    {
       newTimeFlag = true;                                // флаг что нужно поменять время (минуты и часы)
       alm_request = true;                                // нужно проверить будильник
       if (mins % BURN_PERIOD == 0) burnIndicators();     // чистим чистим!
-    }
-    if (mins > 59) {
-      mins = 0;
-      hrs++;
-      if (hrs > 23) hrs = 0;
       changeBright();
-      if (hrs == 3) {                                   // синхронизация с RTC в 3 часа ночи
-        boolean time_sync = false;
-        DateTime now = rtc.now();
-        do {
-          if (!time_sync) {
-            time_sync = true;
-            secs = now.second();
-            mins = now.minute();
-            hrs = now.hour();
-          }
-          now = rtc.now();
-        } while (secs != now.second());
-        secs = now.second();
-        SQW_counter = 0;
-        mins = now.minute();
-        hrs = now.hour();
-      }
     }
-    
+
     if (newTimeFlag || newSecFlag) setNewTime();        // обновляем массив времени
 
-    if (alm_request) {                                  // при смене минуты
+    if (alm_request) 
+    {                                  // при смене минуты
       alm_request = false;                              // сбрасываем признак
       if (alm_fired) alm_fired = false;                 // в следующую минуту - сбрасываем признак звучания будильника
-      if (alm_set && !alm_fired) {                      // если установлен будильник и он не звучал в текущую минуту
+      if (alm_set && !alm_fired) 
+      {                      // если установлен будильник и он не звучал в текущую минуту
                                                         // во всех режимах, кроме установки будильника, сравниваем время с установленным в будильнике
-        if (hrs == alm_hrs && mins == alm_mins && curMode != SETALARM) {
+        if (hrs == alm_hrs && mins == alm_mins && curMode != SETALARM) 
+        {
           alm_fired = true;                             // будильник звучит в текущую минуту
           alm_flag = true;                              // будильник сработал
           almTimer.reset();                             // запуск таймера предельного звучания будильника
         }
       }
     }
-    if (alm_flag) {                                     // если звучит будильник
-      if (almTimer.isReady()) {                         // ждём предельного времени звучания будильника
+    if (alm_flag) 
+    {                                     // если звучит будильник
+      if (almTimer.isReady()) 
+      {                         // ждём предельного времени звучания будильника
         alm_flag = false;                               // сбрасываем сработку будильника
       }
     }
@@ -1684,18 +1749,6 @@ void calculateTime() {
 
 
 void loop() {
-//  current_timestamp = uint16_t(micros());
-//  if ( (current_timestamp - timestamp) >= 50)
-  {
-//    timestamp = current_timestamp;
-    RTC_handler();
-  }
-
-  if (uint16_t(millis()) - timestamp_half_sec >= 499)
-  {
-    timestamp_half_sec = uint16_t(millis());
-    halfsecond = true;
-  }
 
 
   if (halfsecond) calculateTime();                // каждые 500 мс пересчёт и отправка времени
@@ -1703,9 +1756,13 @@ void loop() {
   if (showFlag) 
   {                                 // отображение номера эффекта для цифр при переходе
     if(eshowTimer.isReady()) showFlag = false;
-  } else 
+  } 
+  else 
   {
-    if ((newSecFlag || newTimeFlag) && curMode == 0) flipTick();     // перелистывание цифр
+    if ((newSecFlag || newTimeFlag) && curMode == 0) 
+    {
+      flipTick();     // перелистывание цифр
+    }
   }
   dotBrightTick();                                // плавное мигание точки
   backlBrightTick();                              // плавное мигание подсветки ламп
