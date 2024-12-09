@@ -247,5 +247,7 @@ void dotSetMode(DOT_MODES dMode);
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit)) 
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
 
+#define L16   127                                 // длительность 1/16 в мс при темпе 118 четвёртых в минуту
+
 
 #endif
