@@ -6,19 +6,19 @@
 #include <Adafruit_BME280.h>
 #include "global_externs.h"
 
-timerMinim backlBrightTimer(30);                  // таймер шага яркости подсветки
-timerMinim dotBrightTimer(DOT_TIMER);             // таймер шага яркости точки
+static timerMinim backlBrightTimer(30);                  // таймер шага яркости подсветки
+static timerMinim dotBrightTimer(DOT_TIMER);             // таймер шага яркости точки
 /* всё про точку */
-DOT_MODES dotMode;                                // текущий установленный режим работы точки
+static DOT_MODES dotMode;                                // текущий установленный режим работы точки
 boolean dotBrightFlag, dotBrightDirection;        // индикатор времени начала отображения точки, точка по яркости возрастает/уменьшается
-byte dotMaxBright = DOT_BRIGHT;                   // максимальная яркость точки
+static byte dotMaxBright = DOT_BRIGHT;                   // максимальная яркость точки
 int dotBrightCounter;                             // текущая яркость точки в процессе эффекта
-byte dotBrightStep;                               // шаг изменения яркости точки в нормальных условиях
-byte dotNumBlink;                                 // количество включений точки за период
+static byte dotBrightStep;                               // шаг изменения яркости точки в нормальных условиях
+static byte dotNumBlink;                                 // количество включений точки за период
 
-boolean backlBrightFlag, backlBrightDirection;
-int backlBrightCounter;
-byte backlMaxBright = BACKL_BRIGHT;
+static boolean backlBrightFlag, backlBrightDirection;
+static int backlBrightCounter;
+static byte backlMaxBright = BACKL_BRIGHT;
 /* Обеспечение смены яркости от времени суток
  *  Входные параметры: нет
  *  Выходные параметры: нет

@@ -8,15 +8,15 @@
 
 
 // распиновка ламп
-const byte digitMask[] = {8, 9, 0, 1, 5, 2, 4, 6, 7, 3};  // маска дешифратора платы COVID-19 (подходит для ИН-14 и ИН-12)
-const byte opts[] = {KEY0, KEY1, KEY2, KEY3, KEY4, KEY5}; // порядок индикаторов слева направо
+static const byte digitMask[] = {8, 9, 0, 1, 5, 2, 4, 6, 7, 3};  // маска дешифратора платы COVID-19 (подходит для ИН-14 и ИН-12)
+static const byte opts[] = {KEY0, KEY1, KEY2, KEY3, KEY4, KEY5}; // порядок индикаторов слева направо
 
 /* мелодия */
 // мелодия (длительность импульса, длительность паузы - в циклах таймера, длительность ноты - в мс)
-uint8_t NotePrescalerLow[] = {25, 255, 25, 21, 25, 28, 32, 33, 25, 255, 25, 21, 25, 28, 32, 28, 32, 33};
+static uint8_t NotePrescalerLow[] = {25, 255, 25, 21, 25, 28, 32, 33, 25, 255, 25, 21, 25, 28, 32, 28, 32, 33};
 
-volatile int8_t indiCounter[NUMTUB]; // счётчик каждого индикатора (0-24)
-volatile int8_t curIndi;             // текущий индикатор (0-5)
+static volatile int8_t indiCounter[NUMTUB]; // счётчик каждого индикатора (0-24)
+static volatile int8_t curIndi;             // текущий индикатор (0-5)
 
 /* check 28.10.20
  *

@@ -7,8 +7,8 @@
 #include "global_externs.h"
 
 
-byte glitchCounter, glitchMax, glitchIndic;
-boolean glitchFlag, indiState;
+static byte glitchCounter, glitchMax, glitchIndic;
+static boolean glitchFlag, indiState;
 
 /* check 28.10.20 */
 

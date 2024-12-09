@@ -16,10 +16,10 @@
  *  Выходные параметры: нет
  */
 
-volatile boolean dotFlag = false;                 // признак фазы внутри половины секунды
-boolean alm_request = ALARM_NOREQ;                // признак необходимости проверить совпадение времени с будильником
-boolean alm_fired = ALARM_WAIT_1;                 // запрет повторного срабатывания будильника в ту же минуту
-timerMinim almTimer((long)ALM_TIMEOUT * 1000);    // таймер времени звучания будильника
+static volatile boolean dotFlag = false;                 // признак фазы внутри половины секунды
+static boolean alm_request = ALARM_NOREQ;                // признак необходимости проверить совпадение времени с будильником
+static boolean alm_fired = ALARM_WAIT_1;                 // запрет повторного срабатывания будильника в ту же минуту
+static timerMinim almTimer((long)ALM_TIMEOUT * 1000);    // таймер времени звучания будильника
 
 void calculateTime() 
 {

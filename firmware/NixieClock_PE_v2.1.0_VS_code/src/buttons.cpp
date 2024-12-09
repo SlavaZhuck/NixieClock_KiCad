@@ -14,10 +14,10 @@ void retToTime(void) ;
  *  Выходные параметры: нет
  */
 
-SH_MODES prev_curMode = SHATM;
-sensors_event_t temp_event, pressure_event, humidity_event;
-boolean isFreeze = false;
-int8_t changeHrs, changeMins;
+
+static sensors_event_t temp_event, pressure_event, humidity_event;
+static boolean isFreeze = false;
+static int8_t changeHrs, changeMins;
 
 void buttonsTick() 
 {
