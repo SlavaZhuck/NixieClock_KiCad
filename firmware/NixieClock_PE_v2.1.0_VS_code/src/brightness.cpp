@@ -16,6 +16,9 @@ int dotBrightCounter;                             // текущая яркост
 byte dotBrightStep;                               // шаг изменения яркости точки в нормальных условиях
 byte dotNumBlink;                                 // количество включений точки за период
 
+boolean backlBrightFlag, backlBrightDirection;
+int backlBrightCounter;
+byte backlMaxBright = BACKL_BRIGHT;
 /* Обеспечение смены яркости от времени суток
  *  Входные параметры: нет
  *  Выходные параметры: нет

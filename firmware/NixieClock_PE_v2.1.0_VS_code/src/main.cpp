@@ -34,6 +34,7 @@
 #include "brightness.h"
 #include "beeper.h"
 #include "global_externs.h"
+#include "glitch.h"
 
 // периферия
 RTC_DS3231 rtc;      // создаём класс управления DS3231 (используем интерфейс I2C)
@@ -64,18 +65,16 @@ GButton btnR(BTN_NO_PIN, LOW_PULL, NORM_OPEN);   // инициализируем
 GButton btnA(ALARM_STOP, LOW_PULL, NORM_OPEN);   // инициализируем кнопку Alarm ("сенсор")
 // переменные
 volatile int8_t indiDimm[NUMTUB];    // величина диммирования (0-24)
-volatile int8_t indiCounter[NUMTUB]; // счётчик каждого индикатора (0-24)
+
 volatile int8_t indiDigits[NUMTUB];  // цифры, которые должны показать индикаторы (0-10)
-volatile int8_t curIndi;             // текущий индикатор (0-5)
+
 
 // синхронизация
 const unsigned int SQW_FREQ = 8192;    // частота SQW сигнала
 volatile unsigned int SQW_counter = 0; // новый таймер
 volatile boolean halfsecond = false;   // полсекундный таймер
 
-/* мелодия */
-// мелодия (длительность импульса, длительность паузы - в циклах таймера, длительность ноты - в мс)
-uint8_t NotePrescalerLow[] = {25, 255, 25, 21, 25, 28, 32, 33, 25, 255, 25, 21, 25, 28, 32, 28, 32, 33};
+
 
 volatile unsigned int note_num = 0;   // номер ноты в мелодии
 volatile unsigned int note_count = 0; // фаза сигнала
@@ -184,9 +183,9 @@ boolean chBL = false; // для обнаружения необходимост�
 /* переменнные из исходного скетча */
 boolean changeFlag;
 boolean blinkFlag;
-byte indiMaxBright = INDI_BRIGHT, backlMaxBright = BACKL_BRIGHT;
-boolean backlBrightFlag, backlBrightDirection;
-int backlBrightCounter, indiBrightCounter;
+byte indiMaxBright = INDI_BRIGHT;
+
+int indiBrightCounter;
 boolean newTimeFlag;
 #if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
 boolean newSecFlag; // добавлен для исключения секунд из части эффектов
@@ -194,8 +193,7 @@ boolean newSecFlag; // добавлен для исключения секунд
 
 byte newTime[NUMTUB];
 
-byte glitchCounter, glitchMax, glitchIndic;
-boolean glitchFlag, indiState;
+
 
 /* дополнительные переменные */
 boolean showFlag = false; // признак демонстрации номера эффекта
@@ -224,9 +222,7 @@ byte FLIP_EFFECT_NUM = sizeof(FLIP_SPEED);
 boolean GLITCH_ALLOWED = 1;         // 1 - включить, 0 - выключить глюки. Управляется кнопкой
 boolean auto_show_measurements = 1; // автоматически показывать измерения Temp, Bar, Hum
 
-// распиновка ламп
-const byte digitMask[] = {8, 9, 0, 1, 5, 2, 4, 6, 7, 3};  // маска дешифратора платы COVID-19 (подходит для ИН-14 и ИН-12)
-const byte opts[] = {KEY0, KEY1, KEY2, KEY3, KEY4, KEY5}; // порядок индикаторов слева направо
+
 
 const uint8_t CRTgamma[256] PROGMEM = {
   0,    0,    1,    1,    1,    1,    1,    1,
@@ -320,137 +316,10 @@ inline void settingsTick()
   }
 }
 
-/* check 28.10.20
- *
- */
 
-/* Обеспечение "антиотравления"
- *  Входные параметры: нет
- *  Выходные параметры: нет
- */
-void burnIndicators()
-{
-  for (byte k = 0; k < BURN_LOOPS; k++)
-  {
-    for (byte d = 0; d < 10; d++)
-    {
-      for (byte i = 0; i < NUMTUB; i++)
-      {
-        indiDigits[i]--;
-        if (indiDigits[i] < 0)
-          indiDigits[i] = 9;
-      }
-      delay((unsigned long)BURN_TIME);
-    }
-  }
-}
 
-/* check 28.10.20 */
 
-/* Обеспечение работы "глюков"
- *  Входные параметры: нет
- *  Выходные параметры: нет
- */
-inline void glitchTick()
-{
-  if (!glitchFlag && secs > 7 && secs < 55)
-  {
-    if (glitchTimer.isReady())
-    {
-      glitchFlag = true;
-      indiState = 0;
-      glitchCounter = 0;
-      glitchMax = random(2, 6);
-      glitchIndic = random(0, NUMTUB);
-      glitchTimer.setInterval(random(1, 6) * 20);
-    }
-  }
-  else if (glitchFlag && glitchTimer.isReady())
-  {
-    indiDimm[glitchIndic] = indiState * indiMaxBright;
-    indiState = !indiState;
-    glitchTimer.setInterval(random(1, 6) * 20);
-    glitchCounter++;
-    if (glitchCounter > glitchMax)
-    {
-      glitchTimer.setInterval(random(GLITCH_MIN * 1000L, GLITCH_MAX * 1000L));
-      glitchFlag = false;
-      indiDimm[glitchIndic] = indiMaxBright;
-    }
-  }
-}
-/* check 28.10.20
- *
- */
 
-/* Обработчик прерывания SQW
- *  Входные параметры: нет
- *  Выходные параметры: нет
- */
-void RTC_handler()
-{
-  // таймер
-  if (++SQW_counter == 4096)
-  {
-    halfsecond = true; // Прошло полсекунды
-  }
-  else if (SQW_counter == 8192)
-  {                    // Прошла секунда
-    SQW_counter = 0;   // Начинаем новую секунду
-    halfsecond = true; // Полсекундный индикатор
-  }
-
-  // бипер (замена tone() по причине перенастройки базовых таймеров для его работы)
-  if (note_ip)
-  { // будильник включен
-    if (note_up_low)
-    { // положительная полуволна
-      if (++note_count >= NotePrescalerHigh[note_num])
-      {
-        // достигли длительности положительной полуволны
-        note_up_low = false;       // переходим на отрицательную полуволну
-        note_count = 0;            // сбрасываем счётчик
-        bitWrite(PORTD, PIEZO, 0); // переводим порт в низкое состояние
-      }
-    }
-    else
-    { // отрицательная полуволна
-      if (++note_count >= NotePrescalerLow[note_num])
-      {
-        // достигли длительности отрицательной полуволны
-        note_count = 0; // сбрасываем счётчик
-        if (NotePrescalerHigh[note_num])
-        {
-          // при ненулевой длительности положительной полуволны
-          note_up_low = true;        // переходим на положительную полуволну
-          bitWrite(PORTD, PIEZO, 1); // переводим порт в высокое состояние
-        }
-      }
-    }
-  }
-
-  indiCounter[curIndi]++;                        // счётчик индикатора
-  if (indiCounter[curIndi] >= indiDimm[curIndi]) // если достигли порога диммирования
-    setPin(opts[curIndi], 0);                    // выключить текущий индикатор
-
-  if (indiCounter[curIndi] > 25)
-  {                           // достигли порога в 25 единиц
-    indiCounter[curIndi] = 0; // сброс счетчика лампы
-    if (++curIndi >= NUMTUB)
-      curIndi = 0; // смена лампы закольцованная
-
-    // отправить цифру из массива indiDigits согласно типу лампы
-    if (indiDimm[curIndi] > 0)
-    {
-      byte thisDig = digitMask[indiDigits[curIndi]];
-      setPin(DECODER3, bitRead(thisDig, 0));
-      setPin(DECODER1, bitRead(thisDig, 1));
-      setPin(DECODER0, bitRead(thisDig, 2));
-      setPin(DECODER2, bitRead(thisDig, 3));
-      setPin(opts[curIndi], anodeStates & (1 << curIndi)); // включить анод на текущую лампу
-    }
-  }
-}
 
 /* check 28.10.20 */
 /*

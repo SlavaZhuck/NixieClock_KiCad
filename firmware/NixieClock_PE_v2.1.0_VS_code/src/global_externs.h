@@ -19,15 +19,15 @@ extern int8_t hrs, mins, secs;
 extern boolean newTimeFlag;
 extern boolean newSecFlag;
 extern volatile int8_t indiDigits[];
-extern boolean backlBrightFlag, backlBrightDirection;
-extern int backlBrightCounter, indiBrightCounter;
-extern byte indiMaxBright, backlMaxBright;
+
+extern int indiBrightCounter;
+extern byte indiMaxBright;
 extern byte newTime[];
 
 extern volatile int8_t indiDimm[];    // величина диммирования (0-24)
-extern volatile int8_t indiCounter[]; // счётчик каждого индикатора (0-24)
+
 extern volatile int8_t indiDigits[];  // цифры, которые должны показать индикаторы (0-10)
-extern volatile int8_t curIndi;       // текущий индикатор (0-5)
+
 extern byte anodeStates;
 extern timerMinim flipTimer;
 extern byte FLIP_EFFECT;
