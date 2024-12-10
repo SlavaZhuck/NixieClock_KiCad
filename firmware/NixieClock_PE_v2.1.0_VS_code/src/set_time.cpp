@@ -13,16 +13,16 @@
  *    byte seconds: двузначное число, отображаемое в разрядах секунд.
  *  Выходные параметры: нет
  */
-void sendTime(byte hours, byte minutes, byte seconds) 
+void sendTime(byte hours, byte minutes, byte seconds, volatile int8_t indiDigitsLocal[]) 
 {
-  indiDigits[0] = (byte)hours / 10;
-  indiDigits[1] = (byte)hours % 10;
+  indiDigitsLocal[0] = (byte)hours / 10;
+  indiDigitsLocal[1] = (byte)hours % 10;
 
-  indiDigits[2] = (byte)minutes / 10;
-  indiDigits[3] = (byte)minutes % 10;
+  indiDigitsLocal[2] = (byte)minutes / 10;
+  indiDigitsLocal[3] = (byte)minutes % 10;
 
-  indiDigits[4] = (byte)seconds / 10;
-  indiDigits[5] = (byte)seconds % 10;
+  indiDigitsLocal[4] = (byte)seconds / 10;
+  indiDigitsLocal[5] = (byte)seconds % 10;
 }
 
 
@@ -30,13 +30,13 @@ void sendTime(byte hours, byte minutes, byte seconds)
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-void setNewTime(void) 
+void setNewTime(byte hours, byte minutes, byte seconds, byte newTimeLocal[]) 
 {
-  newTime[0] = (byte)hrs / 10;
-  newTime[1] = (byte)hrs % 10;
+  newTimeLocal[0] = (byte)hours / 10;
+  newTimeLocal[1] = (byte)hours % 10;
 
-  newTime[2] = (byte)mins / 10;
-  newTime[3] = (byte)mins % 10;
-  newTime[4] = (byte)secs / 10;
-  newTime[5] = (byte)secs % 10;  
+  newTimeLocal[2] = (byte)minutes / 10;
+  newTimeLocal[3] = (byte)minutes % 10;
+  newTimeLocal[4] = (byte)seconds / 10;
+  newTimeLocal[5] = (byte)seconds % 10;  
 }

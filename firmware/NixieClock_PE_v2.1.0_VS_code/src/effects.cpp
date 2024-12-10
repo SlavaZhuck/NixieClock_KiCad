@@ -21,7 +21,7 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
 {
   if (FLIP_EFFECT == FM_NULL) 
   {
-    sendTime(hrs, mins, secs);
+    sendTime(hrs, mins, secs, indiDigits);
     newTimeFlag = false;
     newSecFlag = false;
   }
@@ -57,7 +57,7 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
           {               // если яркость меньше нуля
             indiBrightDirection = true;               // меняем направление изменения
             indiBrightCounter = 0;                    // обнуляем яркость
-            sendTime(hrs, mins, secs);                // меняем цифры
+            sendTime(hrs, mins, secs, indiDigits);                // меняем цифры
           }
         } 
         else 

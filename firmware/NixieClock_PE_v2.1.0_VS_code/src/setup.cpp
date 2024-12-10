@@ -118,7 +118,7 @@ void setup() {
   r_duty = DUTY;
   setPWM(GEN, r_duty);
   
-  sendTime(hrs, mins, secs);                      // отправить время на индикаторы
+  sendTime(hrs, mins, secs, indiDigits);                      // отправить время на индикаторы
 
   changeBright();                                 // изменить яркость согласно времени суток
 

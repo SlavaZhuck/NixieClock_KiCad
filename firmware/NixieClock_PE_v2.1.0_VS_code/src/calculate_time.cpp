@@ -69,7 +69,7 @@ void calculateTime()
       changeBright();
     }
 
-    if (newTimeFlag || newSecFlag) setNewTime();        // обновляем массив времени
+    if (newTimeFlag || newSecFlag) setNewTime(hrs, mins, secs, newTime);        // обновляем массив времени
 
     if (alm_request) 
     {                                  // при смене минуты

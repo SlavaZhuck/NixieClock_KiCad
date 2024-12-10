@@ -118,7 +118,7 @@ void buttonsTick()
         curMode = SETTIME;
         changeHrs = hrs;
         changeMins = mins;
-        sendTime(changeHrs, changeMins, 0);
+        sendTime(changeHrs, changeMins, 0, indiDigits);
 
         chBL = true;
       }
@@ -131,7 +131,7 @@ void buttonsTick()
         changeHrs = alm_hrs;
         changeMins = alm_mins;
         
-        sendTime(changeHrs, changeMins, 0);
+        sendTime(changeHrs, changeMins, 0, indiDigits);
 
         dotSetMode( DM_NULL );
         chBL = true;
@@ -157,7 +157,7 @@ void buttonsTick()
           {
             changeMins = 0;
           }
-          sendTime(changeHrs, changeMins, 0);
+          sendTime(changeHrs, changeMins, 0, indiDigits);
         }
 
         if (btnL.isClick())  // уменьшить значение
@@ -177,7 +177,7 @@ void buttonsTick()
               if (changeHrs < 0) changeHrs = 23;
             }
           }
-          sendTime(changeHrs, changeMins, 0);
+          sendTime(changeHrs, changeMins, 0, indiDigits);
         }
 
         if (btnL.isHolded()) // уменьшить значение на 5
@@ -197,7 +197,7 @@ void buttonsTick()
               if (changeHrs < 0) changeHrs = 23;
             }
           }
-          sendTime(changeHrs, changeMins, 0);
+          sendTime(changeHrs, changeMins, 0, indiDigits);
         }
       
         if (btnR.isClick()) // увеличить значение
@@ -217,7 +217,7 @@ void buttonsTick()
               if (changeHrs > 23) changeHrs = 0;
             }
           }
-          sendTime(changeHrs, changeMins, 0);
+          sendTime(changeHrs, changeMins, 0, indiDigits);
         }
       
         if (btnR.isClick()) // увеличить значение на 5
@@ -237,7 +237,7 @@ void buttonsTick()
               if (changeHrs > 23) changeHrs = 0;
             }
           }
-          sendTime(changeHrs, changeMins, 0);
+          sendTime(changeHrs, changeMins, 0, indiDigits);
         }
       }
                                                   
@@ -348,7 +348,7 @@ void buttonsTick()
         {
           curMode = SHALARM;
           anodeStates = 0x0F;
-          sendTime(alm_hrs, alm_mins, 0);
+          sendTime(alm_hrs, alm_mins, 0, indiDigits);
           autoTimer.setInterval(ALARM_SH_TIME);
           autoTimer.reset();
           dotSetMode( DM_NULL );
@@ -414,7 +414,7 @@ void retToTime()
   curMode = SHTIME;
 
   anodeStates = 0x3F;
-  sendTime(hrs, mins, secs);
+  sendTime(hrs, mins, secs, indiDigits);
 
   dotSetMode( alm_set ? DOT_IN_ALARM : DOT_IN_TIME );
   chBL = true;
