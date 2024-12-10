@@ -53,7 +53,7 @@ void changeBright()
   indiBrightCounter = indiMaxBright;
 
   //change PWM to apply backlMaxBright in case of maximum bright mode
-  if (BACKL_MODE == 1) 
+  if (backL_mode == 1) 
 	  setPWM(backlColors[backlColor], backlMaxBright);
 }
 
@@ -75,16 +75,16 @@ void backlBrightTick()
         digitalWrite(BACKLR, 0);
         digitalWrite(BACKLG, 0);
         digitalWrite(BACKLB, 0);
-        if (BACKL_MODE == 1) 
+        if (backL_mode == 1) 
 		{
           setPWM(backlColors[backlColor], backlMaxBright);
         } 
-		else if (BACKL_MODE == 2) 
+		else if (backL_mode == 2) 
 		{
           digitalWrite(backlColors[backlColor], 0);
         }
       }
-      if (BACKL_MODE == 0 && backlBrightTimer.isReady()) 
+      if (backL_mode == 0 && backlBrightTimer.isReady()) 
 	  {
         if (backlMaxBright > 0) 
 		{

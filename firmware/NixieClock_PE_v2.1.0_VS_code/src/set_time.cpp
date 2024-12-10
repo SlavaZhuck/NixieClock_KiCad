@@ -1,10 +1,6 @@
 
-#include "NixieClock_PE_v2.1.0.h"
-#include "timer2Minim.h"
-#include <GyverButton.h>
-#include <RTClib.h>
-#include <Adafruit_BME280.h>
-#include "global_externs.h"
+#include <Arduino.h>
+
 
 /* Заполнение массива отображаемых данных
  *  Входные параметры:

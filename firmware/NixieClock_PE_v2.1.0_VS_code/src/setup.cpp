@@ -97,8 +97,8 @@ void setup() {
   if (EEPROM.read(1023) != 103) {                 // первый запуск
     EEPROM.put(1023, 103);
     EEPROM.put(FLIPEFF, FLIP_EFFECT);
-    EEPROM.put(LIGHTEFF, BACKL_MODE);
-    EEPROM.put(GLEFF, GLITCH_ALLOWED);
+    EEPROM.put(LIGHTEFF, backL_mode);
+    EEPROM.put(GLEFF, glitch_allowed);
     EEPROM.put(ALHOUR, 0);
     EEPROM.put(ALMIN, 0);
     EEPROM.put(ALIFSET, false);
@@ -106,8 +106,8 @@ void setup() {
     EEPROM.put(AUTOSHOWMEAS, 1);
   }
   EEPROM.get(FLIPEFF, FLIP_EFFECT);
-  EEPROM.get(LIGHTEFF, BACKL_MODE);
-  EEPROM.get(GLEFF, GLITCH_ALLOWED);
+  EEPROM.get(LIGHTEFF, backL_mode);
+  EEPROM.get(GLEFF, glitch_allowed);
   EEPROM.get(ALHOUR, alm_hrs);
   EEPROM.get(ALMIN, alm_mins);
   EEPROM.get(ALIFSET, alm_set);

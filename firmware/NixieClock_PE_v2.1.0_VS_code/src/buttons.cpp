@@ -8,6 +8,9 @@
 
 #include <EEPROM.h>
 
+extern boolean showFlag;
+extern boolean currentDigit;
+
 void retToTime(void) ;
 /* Обработка нажатий кнопок
  *  Входные параметры: нет
@@ -41,7 +44,7 @@ void buttonsTick()
     case SHTIME:                                  // (0) отображение часов
       if (btnR.isClick())                         // переключение эффектов цифр
       {                       
-        if (++FLIP_EFFECT >= FLIP_EFFECT_NUM) FLIP_EFFECT = FM_NULL;
+        if (++FLIP_EFFECT >= flip_effect_num) FLIP_EFFECT = FM_NULL;
         EEPROM.put(FLIPEFF, FLIP_EFFECT);
                                                   // для показа номера эффекта
         eshowTimer.reset();
@@ -63,21 +66,21 @@ void buttonsTick()
 
       if (btnL.isClick())                           // переключение эффектов подсветки
       {                       
-        if (++BACKL_MODE >= 3) 
+        if (++backL_mode >= 3) 
         {
-          BACKL_MODE = 0;
+          backL_mode = 0;
           digitalWrite(backlColors[backlColor], 0);
           if(++backlColor >= 3) backlColor = 0;
           EEPROM.put(BLCOLOR, backlColor);
         }
-        EEPROM.put(LIGHTEFF, BACKL_MODE);
+        EEPROM.put(LIGHTEFF, backL_mode);
         chBL = true;
       }
 
       if (btnL.isHolded()) // переключение глюков
       {                      
-        GLITCH_ALLOWED = !GLITCH_ALLOWED;
-        EEPROM.put(GLEFF, GLITCH_ALLOWED);
+        glitch_allowed = !glitch_allowed;
+        EEPROM.put(GLEFF, glitch_allowed);
       }
       
       if (btnA.isClick() 

@@ -181,15 +181,12 @@ boolean isBMEhere;
 boolean chBL = false; // для обнаружения необходимости смены подсветки
 
 /* переменнные из исходного скетча */
-boolean changeFlag;
-boolean blinkFlag;
 byte indiMaxBright = INDI_BRIGHT;
 
 int indiBrightCounter;
 boolean newTimeFlag;
-#if (BOARD_TYPE == 0) || (BOARD_TYPE == 1) || (BOARD_TYPE == 2) || (BOARD_TYPE == 3)
 boolean newSecFlag; // добавлен для исключения секунд из части эффектов
-#endif
+
 
 byte newTime[NUMTUB];
 
@@ -202,29 +199,24 @@ SH_MODES curMode = SHTIME;
 
 boolean currentDigit = false;
 
-boolean lampState = false;
-#if (NUMTUB == 6)
+static boolean lampState = false;
+
 byte anodeStates = 0x3F; // в оригинальном скетче было массивом логических переменных
                          // заменено на байт, биты (начиная с 0), которого определяют
                          // необходимость включения разрядов (начиная со старшего)
-#else
-byte anodeStates = 0x0F; // в оригинальном скетче было массивом логических переменных
-                         // заменено на байт, биты (начиная с 0), которого определяют
-                         // необходимость включения разрядов (начиная со старшего)
 
-#endif
 
 // *********************** ДЛЯ РАЗРАБОТЧИКОВ ***********************
-byte BACKL_MODE = 0; // Выбранный режим активен при запуске и меняется кнопками
+byte backL_mode = 0; // Выбранный режим активен при запуске и меняется кнопками
                      // скорость эффектов, мс (количество не меняй)
                      // количество эффектов
-byte FLIP_EFFECT_NUM = sizeof(FLIP_SPEED);
-boolean GLITCH_ALLOWED = 1;         // 1 - включить, 0 - выключить глюки. Управляется кнопкой
+byte flip_effect_num = sizeof(FLIP_SPEED);
+boolean glitch_allowed = 1;         // 1 - включить, 0 - выключить глюки. Управляется кнопкой
 boolean auto_show_measurements = 1; // автоматически показывать измерения Temp, Bar, Hum
 
 
 
-const uint8_t CRTgamma[256] PROGMEM = {
+static const uint8_t CRTgamma[256] PROGMEM = {
   0,    0,    1,    1,    1,    1,    1,    1,
   1,    1,    1,    1,    1,    1,    1,    1,
   2,    2,    2,    2,    2,    2,    2,    2,
@@ -345,7 +337,7 @@ void loop()
   }
   dotBrightTick();   // плавное мигание точки
   backlBrightTick(); // плавное мигание подсветки ламп
-  if (GLITCH_ALLOWED && curMode == SHTIME)
+  if (glitch_allowed && curMode == SHTIME)
     glitchTick(); // глюки
   buttonsTick();  // кнопки
   settingsTick(); // настройки
