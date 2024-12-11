@@ -19,13 +19,13 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
 
  void flipTick(void) 
 {
-  if (FLIP_EFFECT == FM_NULL) 
+  if (flip_effect == FM_NULL) 
   {
     sendTime(hrs, mins, secs, indiDigits);
     newTimeFlag = false;
     newSecFlag = false;
   }
-  else if (FLIP_EFFECT == FM_SMOOTH) 
+  else if (flip_effect == FM_SMOOTH) 
   {
     if (newTimeFlag) 
     {                             // штатная обработка эффекта
@@ -38,7 +38,7 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
       if (!flipInit) 
       {
         flipInit = true;
-        flipTimer.setInterval((unsigned long)FLIP_SPEED[FLIP_EFFECT]);
+        flipTimer.setInterval((unsigned long)flip_speed[flip_effect]);
         flipTimer.reset();
         indiBrightDirection = false;                 // задаём направление
         // запоминаем, какие цифры поменялись и будем менять их яркость
@@ -82,12 +82,12 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
       indiDigits[5] = (byte)secs % 10;
     }
   }
-  else if (FLIP_EFFECT == FM_LIST) 
+  else if (flip_effect == FM_LIST) 
   {
     if (!flipInit) 
     {
       flipInit = true;
-      flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
+      flipTimer.setInterval(flip_speed[flip_effect]);
                                                     // запоминаем, какие цифры поменялись и будем менять их
       for (byte i = 0; i < NUMTUB; i++) 
       {
@@ -123,12 +123,12 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
       }
     }
   }
-  else if (FLIP_EFFECT == FM_CATHODE) 
+  else if (flip_effect == FM_CATHODE) 
   {
     if (!flipInit) 
     {
       flipInit = true;
-      flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
+      flipTimer.setInterval(flip_speed[flip_effect]);
                                                     // запоминаем, какие цифры поменялись и будем менять их
       for (byte i = 0; i < NUMTUB; i++) 
       {
@@ -182,7 +182,7 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
     }
   }
 // --- train --- //
-  else if (FLIP_EFFECT == FM_TRAIN) 
+  else if (flip_effect == FM_TRAIN) 
   {
     if (newTimeFlag) 
     {                             // штатная обработка эффекта
@@ -191,7 +191,7 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
         flipInit = true;
         currentLamp = 0;
         trainLeaving = true;
-        flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
+        flipTimer.setInterval(flip_speed[flip_effect]);
         //flipTimer.reset();
       }
       if (flipTimer.isReady()) 
@@ -236,7 +236,7 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
   }
 
 // --- elastic band --- //
-  else if (FLIP_EFFECT == FM_ELASTIC) 
+  else if (flip_effect == FM_ELASTIC) 
   {
     if (newTimeFlag) 
     {                             // штатная обработка эффекта
@@ -244,7 +244,7 @@ static const byte cathodeMask[] = {1, 6, 2, 7, 5, 0, 4, 9, 8, 3};
       {
         flipInit = true;
         flipEffectStages = 0;
-        flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
+        flipTimer.setInterval(flip_speed[flip_effect]);
         // flipTimer.reset();
       }
       if (flipTimer.isReady()) 

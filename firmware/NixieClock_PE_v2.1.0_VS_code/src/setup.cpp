@@ -96,7 +96,7 @@ void setup() {
   // EEPROM
   if (EEPROM.read(1023) != 103) {                 // первый запуск
     EEPROM.put(1023, 103);
-    EEPROM.put(FLIPEFF, FLIP_EFFECT);
+    EEPROM.put(FLIPEFF, flip_effect);
     EEPROM.put(LIGHTEFF, backL_mode);
     EEPROM.put(GLEFF, glitch_allowed);
     EEPROM.put(ALHOUR, 0);
@@ -105,7 +105,7 @@ void setup() {
     EEPROM.put(BLCOLOR, 1);
     EEPROM.put(AUTOSHOWMEAS, 1);
   }
-  EEPROM.get(FLIPEFF, FLIP_EFFECT);
+  EEPROM.get(FLIPEFF, flip_effect);
   EEPROM.get(LIGHTEFF, backL_mode);
   EEPROM.get(GLEFF, glitch_allowed);
   EEPROM.get(ALHOUR, alm_hrs);
@@ -126,7 +126,7 @@ void setup() {
   glitchTimer.setInterval(random(GLITCH_MIN * 1000L, GLITCH_MAX * 1000L));
 
   // скорость режима при запуске
-  flipTimer.setInterval(FLIP_SPEED[FLIP_EFFECT]);
+  flipTimer.setInterval(flip_speed[flip_effect]);
 
   // инициализация BME
   isBMEhere = bme.begin();

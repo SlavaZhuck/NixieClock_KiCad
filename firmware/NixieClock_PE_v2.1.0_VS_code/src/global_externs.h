@@ -30,8 +30,8 @@ extern volatile int8_t indiDigits[];  // цифры, которые должны
 
 extern byte anodeStates;
 extern timerMinim flipTimer;
-extern byte FLIP_EFFECT;
-extern byte FLIP_SPEED[];
+extern byte flip_effect;
+extern byte flip_speed[];
 extern boolean alm_flag;
 extern byte flip_effect_num;
 extern boolean auto_show_measurements;

@@ -11,16 +11,19 @@
 extern boolean showFlag;
 extern boolean currentDigit;
 
-void retToTime(void) ;
-/* Обработка нажатий кнопок
- *  Входные параметры: нет
- *  Выходные параметры: нет
- */
-
+static void retToTime(void) ;
+static void settingsTick(void);
 
 static sensors_event_t temp_event, pressure_event, humidity_event;
 static boolean isFreeze = false;
 static int8_t changeHrs, changeMins;
+static timerMinim blinkTimer(500);                    // таймер моргания
+static boolean lampState = false;
+
+/* Обработка нажатий кнопок
+ *  Входные параметры: нет
+ *  Выходные параметры: нет
+ */
 
 void buttonsTick() 
 {
@@ -38,19 +41,20 @@ void buttonsTick()
   btnL.tick(analog <= 860 && analog > 450);       // определение, нажата ли кнопка Up
   btnR.tick(analog <= 380 && analog > 100);       // определение, нажата ли кнопка Down
 
+
   switch (curMode) 
   {
     /*------------------------------------------------------------------------------------------------------------------------------*/
     case SHTIME:                                  // (0) отображение часов
       if (btnR.isClick())                         // переключение эффектов цифр
       {                       
-        if (++FLIP_EFFECT >= flip_effect_num) FLIP_EFFECT = FM_NULL;
-        EEPROM.put(FLIPEFF, FLIP_EFFECT);
+        if (++flip_effect >= flip_effect_num) flip_effect = FM_NULL;
+        EEPROM.put(FLIPEFF, flip_effect);
                                                   // для показа номера эффекта
         eshowTimer.reset();
         showFlag = true;
         memset((void*)indiDimm, indiMaxBright, NUMTUB);
-        memset((void*)indiDigits, FLIP_EFFECT, NUMTUB);
+        memset((void*)indiDigits, flip_effect, NUMTUB);
 
         anodeStates = 0x3F;
         newSecFlag = true;
@@ -405,6 +409,8 @@ void buttonsTick()
       
       break;
   }
+  
+  settingsTick();
 }
 
 
@@ -421,4 +427,39 @@ void retToTime()
 
   dotSetMode( alm_set ? DOT_IN_ALARM : DOT_IN_TIME );
   chBL = true;
+}
+
+/* check 28.10.20
+ *
+ */
+
+/* Поведение отображаемых значений в режимах установки
+ *  Входные параметры: нет
+ *  Выходные параметры: нет
+ */
+static void settingsTick()
+{
+  if (curMode == SETTIME || curMode == SETALARM)
+  {
+    if (curMode == SETALARM && !alm_set)
+    { // мигать отображением времени будильника, если будильник не установлен
+      if (!(anodeStates == 0 || anodeStates == 0xF))
+        anodeStates = 0;
+      if (blinkTimer.isReady())
+        anodeStates ^= 0xF;
+    }
+    else
+    {
+      if (blinkTimer.isReady())
+      {
+        lampState = !lampState;
+        if (lampState)
+          anodeStates = 0xF;
+        else if (!currentDigit)
+          anodeStates = 0x0C;
+        else
+          anodeStates = 0x3;
+      }
+    }
+  }
 }
