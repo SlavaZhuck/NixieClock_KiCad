@@ -32,7 +32,7 @@
 #include "set_time.h"
 #include "DCDC.h"
 #include "brightness.h"
-#include "beeper.h"
+#include "RTC_handler.h"
 #include "global_externs.h"
 #include "glitch.h"
 
@@ -107,7 +107,7 @@ byte newTime[NUMTUB];
 /* дополнительные переменные */
 boolean showFlag = false; // признак демонстрации номера эффекта
 SH_MODES curMode = SHTIME;
-boolean currentDigit = false;
+
 
 
 byte anodeStates = 0x3F; // в оригинальном скетче было массивом логических переменных

@@ -71,8 +71,7 @@ extern int8_t startup_delay;
 
 extern uint8_t r_duty;
 
-extern const uint8_t NotePrescalerHigh[];
-extern const uint8_t notecounter;
+
 extern volatile unsigned int note_num;   // номер ноты в мелодии
 extern volatile unsigned int note_count; // фаза сигнала
 extern volatile boolean note_up_low;     // true - высокий уровень, false - низкий уровень

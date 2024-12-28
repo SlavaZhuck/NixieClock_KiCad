@@ -9,7 +9,7 @@
 #include <EEPROM.h>
 
 extern boolean showFlag;
-extern boolean currentDigit;
+static boolean currentDigit = false;
 
 static void retToTime(void) ;
 static void settingsTick(void);
