@@ -21,17 +21,17 @@ static boolean alm_request = ALARM_NOREQ;                // признак не�
 static boolean alm_fired = ALARM_WAIT_1;                 // запрет повторного срабатывания будильника в ту же минуту
 static timerMinim almTimer((long)ALM_TIMEOUT * 1000);    // таймер времени звучания будильника
 
-void calculateTime() 
+void calculateTime(boolean *dotBrightFlag_local, boolean *dotBrightDirection_local, int *dotBrightCounter_local) 
 {
   halfsecond = false;
   dotFlag = !dotFlag;
   if (dotFlag) 
   {
-    dotBrightFlag = true;
-    dotBrightDirection = true;
-    dotBrightCounter = 0;
+    *dotBrightFlag_local = true;
+    *dotBrightDirection_local = true;
+    *dotBrightCounter_local = 0;
     newSecFlag = true;
-    if (startup_delay) startup_delay--;
+
     // синхронизация с RTC каждую секунду
     {                                   
       boolean time_sync = false;

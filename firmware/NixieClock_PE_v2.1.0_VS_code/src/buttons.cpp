@@ -8,7 +8,6 @@
 
 #include <EEPROM.h>
 
-extern boolean showFlag;
 static boolean currentDigit = false;
 
 static void retToTime(void) ;
@@ -25,7 +24,7 @@ static boolean lampState = false;
  *  Выходные параметры: нет
  */
 
-void buttonsTick() 
+void buttonsTick(boolean *showFlag) 
 {
 
   btnA.tick();                                    // определение, нажата ли кнопка Alarm
@@ -52,7 +51,7 @@ void buttonsTick()
         EEPROM.put(FLIPEFF, flip_effect);
                                                   // для показа номера эффекта
         eshowTimer.reset();
-        showFlag = true;
+        *showFlag = true;
         memset((void*)indiDimm, indiMaxBright, NUMTUB);
         memset((void*)indiDigits, flip_effect, NUMTUB);
 

@@ -283,7 +283,14 @@ void loop()
 {
 
   if (halfsecond)
-    calculateTime(); // каждые 500 мс пересчёт и отправка времени
+  {
+    // уменьшения таймера задержки после запуска
+    if (startup_delay) 
+    {
+      startup_delay--;
+    }
+    calculateTime(&dotBrightFlag, &dotBrightDirection, &dotBrightCounter); // каждые 500 мс пересчёт и отправка времени
+  }
   beeper();
   if (showFlag)
   { // отображение номера эффекта для цифр при переходе
@@ -301,7 +308,7 @@ void loop()
   backlBrightTick(); // плавное мигание подсветки ламп
   if (glitch_allowed && curMode == SHTIME)
     glitchTick(); // глюки
-  buttonsTick();  // кнопки
+  buttonsTick(&showFlag);  // кнопки
   DCDCTick();     // анодное напряжение
 }
 

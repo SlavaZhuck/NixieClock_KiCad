@@ -1,3 +1,3 @@
 
 
- extern void buttonsTick(void);
+ extern void buttonsTick(boolean *showFlag);
