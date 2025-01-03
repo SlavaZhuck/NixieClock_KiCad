@@ -54,7 +54,7 @@ void calculateTime(boolean *dotBrightFlag_local, boolean *dotBrightDirection_loc
 
     if (auto_show_measurements)
     {
-      if (secs == 20 || secs == 40 ) // каждые 20 и 40 секунд запускается таймер на автопоказ измерений
+      if (secs == 10 || secs == 30 || secs == 50) // каждые 20 и 40 секунд запускается таймер на автопоказ измерений
       {      
         autoShowMeasurementsTimer.setInterval(10);
         autoShowMeasurementsTimer.reset();

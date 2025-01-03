@@ -27,6 +27,10 @@ static timerMinim noteTimer(L16); // таймер длительности но�
 static const uint8_t NotePrescalerHigh[] = {25, 0, 25, 21, 25, 28, 31, 33, 25, 0, 25, 21, 25, 28, 31, 28, 31, 33};
 static const uint8_t notecounter = sizeof(NotePrescalerHigh);
 
+static volatile boolean note_up_low = false; // true - высокий уровень, false - низкий уровень
+static volatile boolean note_ip = false;     // true - сигнал звучит, false - сигнал не звучит
+static volatile unsigned int note_num = 0;   // номер ноты в мелодии
+static volatile unsigned int note_count = 0; // фаза сигнала
 
 /* check 28.10.20
  *

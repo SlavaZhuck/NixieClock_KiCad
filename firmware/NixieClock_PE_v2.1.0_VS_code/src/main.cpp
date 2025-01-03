@@ -44,16 +44,11 @@ Adafruit_Sensor *bme_pressure = bme.getPressureSensor();
 Adafruit_Sensor *bme_humidity = bme.getHumiditySensor();
 
 byte flip_speed[] = {0, 60, 50, 40, 90, 90};
-byte flip_effect = FM_SMOOTH; // Выбранный активен при первом запуске и меняется кнопками.
 
 // таймеры
-
 timerMinim flipTimer(flip_speed[flip_effect]); // таймер эффектов
 timerMinim glitchTimer(1000);                  // таймер глюков
-
-
 timerMinim eshowTimer(300); // таймер демонстрации номера эффекта
-
 timerMinim autoTimer(ALARM_SH_TIME);          // таймер автоматического выхода из режимов
 timerMinim measurementsTimer(MEASURE_PERIOD); // таймер обновления показаний
 timerMinim autoShowMeasurementsTimer(0);      // таймер автопоказа темпера...
@@ -63,11 +58,10 @@ GButton btnSet(BTN_NO_PIN, LOW_PULL, NORM_OPEN); // инициализируем
 GButton btnL(BTN_NO_PIN, LOW_PULL, NORM_OPEN);   // инициализируем кнопку Down (Left) ("минус")
 GButton btnR(BTN_NO_PIN, LOW_PULL, NORM_OPEN);   // инициализируем кнопку Up (Right) ("плюс")
 GButton btnA(ALARM_STOP, LOW_PULL, NORM_OPEN);   // инициализируем кнопку Alarm ("сенсор")
+
 // переменные
 volatile int8_t indiDimm[NUMTUB];    // величина диммирования (0-24)
-
 volatile int8_t indiDigits[NUMTUB];  // цифры, которые должны показать индикаторы (0-10)
-
 
 // синхронизация
 const unsigned int SQW_FREQ = 8192;    // частота SQW сигнала
@@ -75,21 +69,11 @@ volatile unsigned int SQW_counter = 0; // новый таймер
 volatile boolean halfsecond = false;   // полсекундный таймер
 
 
-
-volatile unsigned int note_num = 0;   // номер ноты в мелодии
-volatile unsigned int note_count = 0; // фаза сигнала
-volatile boolean note_up_low = false; // true - высокий уровень, false - низкий уровень
-volatile boolean note_ip = false;     // true - сигнал звучит, false - сигнал не звучит
-
-
 int8_t hrs, mins, secs;        // часы, минуты, секунды
-int8_t alm_hrs, alm_mins;      // сохранение времени будильника
-boolean alm_set;               // будильник установлен? (берётся из памяти)
 boolean alm_flag = ALARM_WAIT; // будильник сработал?
 
 /* всё про подсветку */
 byte backlColors[3] = {BACKLR, BACKLG, BACKLB};
-byte backlColor;
 
 /* всё про bme280 */
 boolean isBMEhere;
@@ -115,15 +99,21 @@ byte anodeStates = 0x3F; // в оригинальном скетче было м
                          // необходимость включения разрядов (начиная со старшего)
 
 
+
+byte flip_effect_num = sizeof(flip_speed);
+
+
 // *********************** ДЛЯ РАЗРАБОТЧИКОВ ***********************
+// saved to EEPROM
 byte backL_mode = 0; // Выбранный режим активен при запуске и меняется кнопками
                      // скорость эффектов, мс (количество не меняй)
                      // количество эффектов
-byte flip_effect_num = sizeof(flip_speed);
 boolean glitch_allowed = 1;         // 1 - включить, 0 - выключить глюки. Управляется кнопкой
 boolean auto_show_measurements = 1; // автоматически показывать измерения Temp, Bar, Hum
-
-
+byte backlColor;
+int8_t alm_hrs, alm_mins;      // сохранение времени будильника
+boolean alm_set;               // будильник установлен? (берётся из памяти)
+byte flip_effect = FM_SMOOTH; // Выбранный активен при первом запуске и меняется кнопками.
 
 static const uint8_t CRTgamma[256] PROGMEM = {
   0,    0,    1,    1,    1,    1,    1,    1,
@@ -308,7 +298,7 @@ void loop()
   backlBrightTick(); // плавное мигание подсветки ламп
   if (glitch_allowed && curMode == SHTIME)
     glitchTick(); // глюки
-  buttonsTick(&showFlag);  // кнопки
+  buttonsTick(&showFlag, &SQW_counter, &chBL);  // кнопки
   DCDCTick();     // анодное напряжение
 }
 

@@ -10,7 +10,7 @@
 
 static boolean currentDigit = false;
 
-static void retToTime(void) ;
+static void retToTime(boolean *chBL_local) ;
 static void settingsTick(void);
 
 static sensors_event_t temp_event, pressure_event, humidity_event;
@@ -24,7 +24,7 @@ static boolean lampState = false;
  *  Выходные параметры: нет
  */
 
-void buttonsTick(boolean *showFlag) 
+void buttonsTick(boolean *showFlag_local, volatile unsigned int *SQW_counter_local, boolean *chBL_local) 
 {
 
   btnA.tick();                                    // определение, нажата ли кнопка Alarm
@@ -51,7 +51,7 @@ void buttonsTick(boolean *showFlag)
         EEPROM.put(FLIPEFF, flip_effect);
                                                   // для показа номера эффекта
         eshowTimer.reset();
-        *showFlag = true;
+        *showFlag_local = true;
         memset((void*)indiDimm, indiMaxBright, NUMTUB);
         memset((void*)indiDigits, flip_effect, NUMTUB);
 
@@ -77,7 +77,7 @@ void buttonsTick(boolean *showFlag)
           EEPROM.put(BLCOLOR, backlColor);
         }
         EEPROM.put(LIGHTEFF, backL_mode);
-        chBL = true;
+        *chBL_local = true;
       }
 
       if (btnL.isHolded()) // переключение глюков
@@ -114,7 +114,7 @@ void buttonsTick(boolean *showFlag)
         autoTimer.setInterval(TEMP_SH_TIME);
         autoTimer.reset();
         dotSetMode( DM_NULL );
-        chBL = true;
+        *chBL_local = true;
       }
       
       if (btnSet.isDouble()) // переход в режим установки времени
@@ -126,7 +126,7 @@ void buttonsTick(boolean *showFlag)
         changeMins = mins;
         sendTime(changeHrs, changeMins, 0, indiDigits);
 
-        chBL = true;
+        *chBL_local = true;
       }
 
       if (btnSet.isHolded()) // переход в режим установки будильника и времени его
@@ -140,7 +140,7 @@ void buttonsTick(boolean *showFlag)
         sendTime(changeHrs, changeMins, 0, indiDigits);
 
         dotSetMode( DM_NULL );
-        chBL = true;
+        *chBL_local = true;
       }
 
       break;
@@ -250,7 +250,7 @@ void buttonsTick(boolean *showFlag)
       if (btnA.isHolded()) // переход в режим отображения времени без сохранения или смена установки будильника
       {                      
         if (curMode == SETTIME) 
-          retToTime();
+          retToTime(chBL_local);
         else alm_set = !alm_set;
       }
 
@@ -263,7 +263,7 @@ void buttonsTick(boolean *showFlag)
           secs = 0;
           DateTime now = rtc.now();
           rtc.adjust(DateTime(now.year(), now.month(), now.day(), hrs, mins, 0));
-          SQW_counter = 0;
+          *SQW_counter_local = 0;
           changeBright(); 
         } 
         else 
@@ -274,14 +274,14 @@ void buttonsTick(boolean *showFlag)
           EEPROM.put(ALMIN, alm_mins);
           EEPROM.put(ALIFSET, alm_set);
         }
-        retToTime();
+        retToTime(chBL_local);
       }
 
       break;
 
     /*------------------------------------------------------------------------------------------------------------------------------*/ 
     case SHALARM:                                 // (2) отображение времени будильника (5 сек)
-      if (autoTimer.isReady() || btnA.isClick() || btnA.isHolded()) retToTime();
+      if (autoTimer.isReady() || btnA.isClick() || btnA.isHolded()) retToTime(chBL_local);
       
       break;
 
@@ -299,7 +299,7 @@ void buttonsTick(boolean *showFlag)
           indiDigits[2] = (byte)((int)(temp_event.temperature * 10) % 10); 
         }
       }
-      if (btnA.isHolded()) retToTime();
+      if (btnA.isHolded()) retToTime(chBL_local);
       if (btnSet.isHolded()) isFreeze = !isFreeze;
       if ( (autoTimer.isReady() || btnA.isClick()) && !isFreeze) 
       {
@@ -321,7 +321,7 @@ void buttonsTick(boolean *showFlag)
         dotSetMode( DM_NULL );
         autoTimer.setInterval(ATMOSPHERE_SH_TIME);
         autoTimer.reset();
-        chBL = true;
+        *chBL_local = true;
       }
       
       break;
@@ -346,7 +346,7 @@ void buttonsTick(boolean *showFlag)
           }
         }
       }
-      if (btnA.isHolded()) retToTime();
+      if (btnA.isHolded()) retToTime(chBL_local);
       if (btnSet.isHolded()) isFreeze = !isFreeze;
       if ( (autoTimer.isReady() || btnA.isClick()) && !isFreeze) 
       {
@@ -358,9 +358,9 @@ void buttonsTick(boolean *showFlag)
           autoTimer.setInterval(ALARM_SH_TIME);
           autoTimer.reset();
           dotSetMode( DM_NULL );
-          chBL = true;
+          *chBL_local = true;
         } 
-        else retToTime();
+        else retToTime(chBL_local);
       }
       break;
       
@@ -379,7 +379,7 @@ void buttonsTick(boolean *showFlag)
           indiDigits[3] = (byte)((int)pressure_in_mm % 10);
         }
       }
-      if (btnA.isHolded()) retToTime();
+      if (btnA.isHolded()) retToTime(chBL_local);
       if (btnSet.isHolded()) isFreeze = !isFreeze;
       if ( (autoTimer.isReady() || btnA.isClick()) && !isFreeze) 
       {
@@ -403,7 +403,7 @@ void buttonsTick(boolean *showFlag)
         anodeStates = 0x30;
         autoTimer.setInterval(HUMIDITY_SH_TIME);
         autoTimer.reset();
-        chBL = true;
+        *chBL_local = true;
       }
       
       break;
@@ -417,7 +417,7 @@ void buttonsTick(boolean *showFlag)
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-void retToTime() 
+void retToTime(boolean *chBL_local) 
 {
   curMode = SHTIME;
 
@@ -425,7 +425,7 @@ void retToTime()
   sendTime(hrs, mins, secs, indiDigits);
 
   dotSetMode( alm_set ? DOT_IN_ALARM : DOT_IN_TIME );
-  chBL = true;
+  *chBL_local = true;
 }
 
 /* check 28.10.20

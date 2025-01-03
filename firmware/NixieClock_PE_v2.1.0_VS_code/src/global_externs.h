@@ -71,9 +71,4 @@ extern int8_t startup_delay;
 
 extern uint8_t r_duty;
 
-
-extern volatile unsigned int note_num;   // номер ноты в мелодии
-extern volatile unsigned int note_count; // фаза сигнала
-extern volatile boolean note_up_low;     // true - высокий уровень, false - низкий уровень
-extern volatile boolean note_ip;         // true - сигнал звучит, false - сигнал не звучит
 #endif

@@ -81,7 +81,6 @@ void setup() {
     now = rtc.now();
   } while (secs != now.second());
   secs = now.second();
-  SQW_counter = 0;
   mins = now.minute();
   hrs = now.hour();
       
