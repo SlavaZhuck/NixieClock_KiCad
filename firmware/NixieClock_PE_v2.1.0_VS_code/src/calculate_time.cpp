@@ -65,8 +65,13 @@ void calculateTime(boolean *dotBrightFlag_local, boolean *dotBrightDirection_loc
     {
       newTimeFlag = true;                                // флаг что нужно поменять время (минуты и часы)
       alm_request = true;                                // нужно проверить будильник
-      if (mins % BURN_PERIOD == 0) burnIndicators();     // чистим чистим!
+
       changeBright();
+    }
+
+    if (0 == secs) 
+    {
+      if (mins % BURN_PERIOD == 0) burnIndicators();     // чистим чистим!
     }
 
     if (newTimeFlag || newSecFlag) setNewTime(hrs, mins, secs, newTime);        // обновляем массив времени
