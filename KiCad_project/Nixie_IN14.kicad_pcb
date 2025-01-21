@@ -983,7 +983,7 @@
 		(descr "SOD-323")
 		(tags "SOD-323")
 		(property "Reference" "D7"
-			(at -2.54 0 360)
+			(at -2.54 0 0)
 			(layer "F.SilkS")
 			(uuid "ee890ad6-60ec-4420-aaa1-9cd083bdbe5e")
 			(effects
@@ -8375,7 +8375,7 @@
 				)
 			)
 		)
-		(property "Value" "470"
+		(property "Value" "5.1k"
 			(at 0 1.82 90)
 			(layer "F.Fab")
 			(uuid "ed4995c2-211f-445b-bc2a-2c90f51e57de")
