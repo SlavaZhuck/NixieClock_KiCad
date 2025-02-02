@@ -113,7 +113,7 @@ void buttonsTick(boolean *showFlag_local, volatile unsigned int *SQW_counter_loc
         anodeStates = 0x07;
         autoTimer.setInterval(TEMP_SH_TIME);
         autoTimer.reset();
-        dotSetMode( DM_NULL );
+        dotSetMode( DM_FULL );
         *chBL_local = true;
       }
       
@@ -318,7 +318,7 @@ void buttonsTick(boolean *showFlag_local, volatile unsigned int *SQW_counter_loc
           indiDigits[3] = (byte)0;
         }
         anodeStates = 0x0E;
-        dotSetMode( DM_NULL );
+        dotSetMode( DM_FULL );
         autoTimer.setInterval(ATMOSPHERE_SH_TIME);
         autoTimer.reset();
         *chBL_local = true;
@@ -357,7 +357,7 @@ void buttonsTick(boolean *showFlag_local, volatile unsigned int *SQW_counter_loc
           sendTime(alm_hrs, alm_mins, 0, indiDigits);
           autoTimer.setInterval(ALARM_SH_TIME);
           autoTimer.reset();
-          dotSetMode( DM_NULL );
+          dotSetMode( DM_FULL );
           *chBL_local = true;
         } 
         else retToTime(chBL_local);

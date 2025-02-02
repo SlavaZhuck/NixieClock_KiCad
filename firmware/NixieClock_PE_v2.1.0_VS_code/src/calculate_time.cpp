@@ -31,47 +31,48 @@ void calculateTime(boolean *dotBrightFlag_local, boolean *dotBrightDirection_loc
     *dotBrightDirection_local = true;
     *dotBrightCounter_local = 0;
     newSecFlag = true;
-
-    // синхронизация с RTC каждую секунду
-    {                                   
-      boolean time_sync = false;
-      DateTime now = rtc.now();
-      do 
-      {
-        if (!time_sync) 
-        {
-          time_sync = true;
-          secs = now.second();
-          mins = now.minute();
-          hrs = now.hour();
-        }
-        now = rtc.now();
-      } while (secs != now.second());
-      secs = now.second();
-      mins = now.minute();
-      hrs = now.hour();
+    secs++;
+    if (startup_delay) startup_delay--;
+    if (secs > 59) {
+      secs = 0;
+      mins++;
+      newTimeFlag = true;                                // флаг что нужно поменять время (минуты и часы)
+      alm_request = true;                                // нужно проверить будильник
+      if (mins % BURN_PERIOD == 0) burnIndicators();     // чистим чистим!
     }
+    if (mins > 59) {
+      mins = 0;
+      hrs++;
+      if (hrs > 23) hrs = 0;
+      changeBright();
+      // if (hrs == 3) {                                   // синхронизация с RTC в 3 часа ночи
+      {                                                    // синхронизация с RTC каждый час
+        boolean time_sync = false;
+        DateTime now = rtc.now();
+        do {
+          if (!time_sync) {
+            time_sync = true;
+            secs = now.second();
+            mins = now.minute();
+            hrs = now.hour();
+          }
+          now = rtc.now();
+        } while (secs != now.second());
+        secs = now.second();
+        SQW_counter = 0;
+        mins = now.minute();
+        hrs = now.hour();
+      }
+    }
+
 
     if (auto_show_measurements)
     {
-      if (secs == 10 || secs == 30 || secs == 50) // каждые 20 и 40 секунд запускается таймер на автопоказ измерений
+      if (secs == 10 || secs == 30 || secs == 50) // каждые 10, 30 и 50 секунд запускается таймер на автопоказ измерений
       {      
         autoShowMeasurementsTimer.setInterval(10);
         autoShowMeasurementsTimer.reset();
       }
-    }
-
-    if (secs >= 59) 
-    {
-      newTimeFlag = true;                                // флаг что нужно поменять время (минуты и часы)
-      alm_request = true;                                // нужно проверить будильник
-
-      changeBright();
-    }
-
-    if (0 == secs) 
-    {
-      if (mins % BURN_PERIOD == 0) burnIndicators();     // чистим чистим!
     }
 
     if (newTimeFlag || newSecFlag) setNewTime(hrs, mins, secs, newTime);        // обновляем массив времени
