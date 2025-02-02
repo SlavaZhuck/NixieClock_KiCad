@@ -6,7 +6,6 @@
 #include <Adafruit_BME280.h>
 #include "global_externs.h"
 
-
 static byte glitchCounter, glitchMax, glitchIndic;
 static boolean glitchFlag, indiState;
 

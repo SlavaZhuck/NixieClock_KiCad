@@ -24,9 +24,9 @@ extern int indiBrightCounter;
 extern byte indiMaxBright;
 extern byte newTime[];
 
-extern volatile int8_t indiDimm[];    // величина диммирования (0-24)
+extern volatile int8_t indiDimm[]; // величина диммирования (0-24)
 
-extern volatile int8_t indiDigits[];  // цифры, которые должны показать индикаторы (0-10)
+extern volatile int8_t indiDigits[]; // цифры, которые должны показать индикаторы (0-10)
 
 extern byte anodeStates;
 extern timerMinim flipTimer;

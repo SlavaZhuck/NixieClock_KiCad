@@ -6,7 +6,6 @@
 #include <Adafruit_BME280.h>
 #include "global_externs.h"
 
-
 // распиновка ламп
 static const byte digitMask[] = {8, 9, 0, 1, 5, 2, 4, 6, 7, 3};  // маска дешифратора платы COVID-19 (подходит для ИН-14 и ИН-12)
 static const byte opts[] = {KEY0, KEY1, KEY2, KEY3, KEY4, KEY5}; // порядок индикаторов слева направо
@@ -104,7 +103,6 @@ void RTC_handler()
     }
   }
 }
-
 
 /* Проигрывание мелодии для будильника (часть, работающая в основном коде)
  *  Входные параметры: нет

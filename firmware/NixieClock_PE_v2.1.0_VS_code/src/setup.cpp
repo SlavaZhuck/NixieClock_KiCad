@@ -8,15 +8,12 @@
 
 #include <EEPROM.h>
 
-/* Обработка нажатий кнопок
- *  Входные параметры: нет
- *  Выходные параметры: нет
- */
 /* Структурная функция начальной установки
  *  Входные параметры: нет
  *  Выходные параметры: нет
  */
-void setup() {
+void setup()
+{
   // случайное зерно для генератора случайных чисел
   randomSeed(analogRead(6) + analogRead(7));
 
@@ -42,36 +39,36 @@ void setup() {
   pinMode(BACKLR, OUTPUT);
   pinMode(BACKLG, OUTPUT);
   pinMode(BACKLB, OUTPUT);
-  
-  digitalWrite(GEN, 0);                           // устранение возможного "залипания" выхода генератора
-  btnSet.setTimeout(400);                         // установка параметров библиотеки реагирования на кнопки
-  btnSet.setDebounce(90);                         // защитный период от дребезга
-  btnR.setDebounce(90);                           // защитный период от дребезга
-  btnL.setDebounce(90);                           // защитный период от дребезга
 
- // ---------- RTC -----------
+  digitalWrite(GEN, 0);   // устранение возможного "залипания" выхода генератора
+  btnSet.setTimeout(400); // установка параметров библиотеки реагирования на кнопки
+  btnSet.setDebounce(90); // защитный период от дребезга
+  btnR.setDebounce(90);   // защитный период от дребезга
+  btnL.setDebounce(90);   // защитный период от дребезга
+
+  // ---------- RTC -----------
   rtc.begin();
-  if (rtc.lostPower()) 
+  if (rtc.lostPower())
   {
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   }
-  pinMode(RTC_SYNC, INPUT_PULLUP);                // объявляем вход для синхросигнала RTC
-                                                  // заставляем входной сигнал генерировать прерывания
+  pinMode(RTC_SYNC, INPUT_PULLUP); // объявляем вход для синхросигнала RTC
+                                   // заставляем входной сигнал генерировать прерывания
   attachInterrupt(digitalPinToInterrupt(RTC_SYNC), RTC_handler, RISING);
-  rtc.writeSqwPinMode(DS3231_SquareWave8kHz);     // настраиваем DS3231 для вывода сигнала 8кГц
+  rtc.writeSqwPinMode(DS3231_SquareWave8kHz); // настраиваем DS3231 для вывода сигнала 8кГц
 
   // настройка быстрого чтения аналогового порта (mode 4)
   sbi(ADCSRA, ADPS2);
   cbi(ADCSRA, ADPS1);
   cbi(ADCSRA, ADPS0);
-  analogRead(A6);                                 // устранение шума
+  analogRead(A6); // устранение шума
   analogRead(A7);
   // ------------------
   boolean time_sync = false;
   DateTime now = rtc.now();
-  do 
+  do
   {
-    if (!time_sync) 
+    if (!time_sync)
     {
       time_sync = true;
       secs = now.second();
@@ -83,17 +80,18 @@ void setup() {
   secs = now.second();
   mins = now.minute();
   hrs = now.hour();
-      
+
   // задаем частоту ШИМ на 9 и 10 выводах 31 кГц
-  TCCR1B = (TCCR1B & 0b11111000) | 1;               // ставим делитель 1
+  TCCR1B = (TCCR1B & 0b11111000) | 1; // ставим делитель 1
 
   // перенастраиваем частоту ШИМ на пинах 3 и 11 для соответствия таймеру 0
   // Пины D3 и D11 - 980 Гц
-  TCCR2B = 0b00000011;                            // x32
-  TCCR2A = 0b00000001;                            // phase correct
+  TCCR2B = 0b00000011; // x32
+  TCCR2A = 0b00000001; // phase correct
 
   // EEPROM
-  if (EEPROM.read(1023) != 103) {                 // первый запуск
+  if (EEPROM.read(1023) != 103)
+  { // первый запуск
     EEPROM.put(1023, 103);
     EEPROM.put(FLIPEFF, flip_effect);
     EEPROM.put(LIGHTEFF, backL_mode);
@@ -116,10 +114,10 @@ void setup() {
   // включаем ШИМ
   r_duty = DUTY;
   setPWM(GEN, r_duty);
-  
-  sendTime(hrs, mins, secs, indiDigits);                      // отправить время на индикаторы
 
-  changeBright();                                 // изменить яркость согласно времени суток
+  sendTime(hrs, mins, secs, indiDigits); // отправить время на индикаторы
+
+  changeBright(); // изменить яркость согласно времени суток
 
   // стартовый период глюков
   glitchTimer.setInterval(random(GLITCH_MIN * 1000L, GLITCH_MAX * 1000L));
@@ -129,12 +127,14 @@ void setup() {
 
   // инициализация BME
   isBMEhere = bme.begin();
-  if( !isBMEhere) {
+  if (!isBMEhere)
+  {
     isBMEhere = bme.begin(BME280_ADDRESS_ALTERNATE);
   }
-  if (isBMEhere ) bme.setSampling(Adafruit_BME280::MODE_NORMAL,
+  if (isBMEhere)
+    bme.setSampling(Adafruit_BME280::MODE_NORMAL,
                     Adafruit_BME280::SAMPLING_X16, // temperature
                     Adafruit_BME280::SAMPLING_X16, // pressure
                     Adafruit_BME280::SAMPLING_X16, // humidity
-                    Adafruit_BME280::FILTER_X4   );
+                    Adafruit_BME280::FILTER_X4);
 }
