@@ -330,7 +330,7 @@ void buttonsTick(boolean *showFlag_local, volatile unsigned int *SQW_counter_loc
         indiDigits[3] = (byte)0;
       }
       anodeStates = 0x0E;
-      dotSetMode(DM_FULL);
+      dotSetMode(DM_NULL);
       autoTimer.setInterval(ATMOSPHERE_SH_TIME);
       autoTimer.reset();
       *chBL_local = true;
