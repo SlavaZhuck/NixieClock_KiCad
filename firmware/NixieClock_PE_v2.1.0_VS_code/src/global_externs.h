@@ -7,6 +7,8 @@
 #include <Adafruit_BME280.h>
 
 extern void sendTime(byte hours, byte minutes, byte seconds, volatile int8_t indiDigitsLocal[]);
+extern void sendYear(uint16_t year, volatile int8_t indiDigitsLocal[]);
+extern void sendDate(byte month, byte day, volatile int8_t indiDigitsLocal[]);
 extern void changeBright(void);
 extern void burnIndicators(void);
 extern void setNewTime(byte hours, byte minutes, byte seconds, byte newTimeLocal[]);
@@ -16,6 +18,7 @@ extern void setPin(byte pin, byte x);
 extern byte getPWM_CRT(byte val);
 
 extern int8_t hrs, mins, secs;
+extern byte lastAdjustedMonth;
 extern boolean newTimeFlag;
 extern boolean newSecFlag;
 extern volatile int8_t indiDigits[];

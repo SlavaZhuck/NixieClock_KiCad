@@ -68,7 +68,8 @@ const unsigned int SQW_FREQ = 8192;    // частота SQW сигнала
 volatile unsigned int SQW_counter = 0; // новый таймер
 volatile boolean halfsecond = false;   // полсекундный таймер
 
-int8_t hrs, mins, secs;        // часы, минуты, секунды
+int8_t hrs, mins, secs;             // часы, минуты, секунды
+byte lastAdjustedMonth = 0;         // месяц, в котором последний раз применялась коррекция ADJUST_TIME (0 = не инициализирован)
 boolean alm_flag = ALARM_WAIT; // будильник сработал?
 
 /* всё про подсветку */

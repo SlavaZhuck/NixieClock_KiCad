@@ -101,6 +101,7 @@ void setup()
     EEPROM.put(ALIFSET, false);
     EEPROM.put(BLCOLOR, 1);
     EEPROM.put(AUTOSHOWMEAS, 1);
+    EEPROM.put(LASTADJMONTH, (byte)0);
   }
   EEPROM.get(FLIPEFF, flip_effect);
   EEPROM.get(LIGHTEFF, backL_mode);
@@ -110,6 +111,14 @@ void setup()
   EEPROM.get(ALIFSET, alm_set);
   EEPROM.get(BLCOLOR, backlColor);
   EEPROM.get(AUTOSHOWMEAS, auto_show_measurements);
+  EEPROM.get(LASTADJMONTH, lastAdjustedMonth);
+  // первый запуск или повреждённое значение — синхронизируемся с текущим месяцем
+  // без применения сдвига (коррекция сработает на ближайшей смене месяца)
+  if (lastAdjustedMonth < 1 || lastAdjustedMonth > 12)
+  {
+    lastAdjustedMonth = rtc.now().month();
+    EEPROM.put(LASTADJMONTH, lastAdjustedMonth);
+  }
 
   // включаем ШИМ
   r_duty = DUTY;

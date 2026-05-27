@@ -2,6 +2,7 @@
 #include "NixieClock_PE_v2.1.0.h"
 #include "timer2Minim.h"
 #include "global_externs.h"
+#include <EEPROM.h>
 
 /* Обеспечение хода времени и запуск зависящих от времени процессов
  *  ("антиотравления" катодов, синхронизация с RTC (в 3 часа ночи),
@@ -43,7 +44,9 @@ void calculateTime(boolean *dotBrightFlag_local, boolean *dotBrightDirection_loc
       mins = 0;
       hrs++;
       if (hrs > 23)
+      {
         hrs = 0;
+      }
       changeBright();
       // if (hrs == 3) {                                   // синхронизация с RTC в 3 часа ночи
       { // синхронизация с RTC каждый час
@@ -64,6 +67,24 @@ void calculateTime(boolean *dotBrightFlag_local, boolean *dotBrightDirection_loc
         SQW_counter = 0;
         mins = now.minute();
         hrs = now.hour();
+
+        // автоподстройка времени при смене календарного месяца:
+        // компенсация ухода кварца на ADJUST_TIME секунд за месяц.
+        byte currentMonth = now.month();
+        if (lastAdjustedMonth >= 1 && lastAdjustedMonth <= 12 &&
+            currentMonth != lastAdjustedMonth && ADJUST_TIME != 0)
+        {
+          rtc.adjust(now + TimeSpan((int32_t)ADJUST_TIME));
+          now = rtc.now();
+          secs = now.second();
+          mins = now.minute();
+          hrs = now.hour();
+        }
+        if (currentMonth != lastAdjustedMonth)
+        {
+          lastAdjustedMonth = currentMonth;
+          EEPROM.put(LASTADJMONTH, lastAdjustedMonth);
+        }
       }
     }
 
