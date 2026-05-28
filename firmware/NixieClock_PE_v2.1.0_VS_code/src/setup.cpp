@@ -64,22 +64,7 @@ void setup()
   analogRead(A6); // устранение шума
   analogRead(A7);
   // ------------------
-  boolean time_sync = false;
-  DateTime now = rtc.now();
-  do
-  {
-    if (!time_sync)
-    {
-      time_sync = true;
-      secs = now.second();
-      mins = now.minute();
-      hrs = now.hour();
-    }
-    now = rtc.now();
-  } while (secs != now.second());
-  secs = now.second();
-  mins = now.minute();
-  hrs = now.hour();
+  syncFromRtc();
 
   // задаем частоту ШИМ на 9 и 10 выводах 31 кГц
   TCCR1B = (TCCR1B & 0b11111000) | 1; // ставим делитель 1

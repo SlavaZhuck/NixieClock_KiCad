@@ -9,12 +9,7 @@
 static byte glitchCounter, glitchMax, glitchIndic;
 static boolean glitchFlag, indiState;
 
-/* check 28.10.20 */
-
-/* Обеспечение работы "глюков"
- *  Входные параметры: нет
- *  Выходные параметры: нет
- */
+/* Обеспечение работы "глюков" */
 void glitchTick(void)
 {
   if (!glitchFlag && secs > 7 && secs < 55)
