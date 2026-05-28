@@ -1,59 +1,56 @@
 
 #include "NixieClock_PE_v2.1.0.h"
 #include "timer2Minim.h"
-#include <GyverButton.h>
-#include <RTClib.h>
-#include <Adafruit_BME280.h>
 #include "global_externs.h"
 
-/* регулировка напряжения */
-static const uint8_t iduty = 10;     // период интегрирования ошибки напряжения
-static uint8_t idcounter = 0;        // текущий период интегрирования
-static const int8_t maxerrduty = 10; // максимальное значение интегрированной ошибки напряжения
-static int duty_delta = 0;           // текущая интегральная ошибка
-static const int nominallevel = 490; // номинальное значение напряжения
-static const uint8_t maxduty = 220;  // защита от чрезмерного повышения напряжения
-static const uint8_t minduty = 10;   // защита от выключения
-uint8_t r_duty;                      // актуальная скважность ШИМ анодного напряжения
-int8_t startup_delay = 10;           // задержка в применении нового значения ШИМ после запуска, кратно 500мс
-
-/* Стабилизация высокого напряжения
- *  Входные параметры: нет
- *  Выходные параметры: нет
+/* Замкнутая система регулирования анодного (высокого) напряжения.
+ *
+ * Период вызова DCDCTick — основной loop(); измерение выполняется на A6.
+ * Регулятор интегральный: ошибка между измеренным напряжением и номиналом
+ * накапливается за iduty вызовов; при превышении порога maxerrduty
+ * скважность ШИМ генератора (r_duty) корректируется на один шаг и ограничивается
+ * диапазоном [minduty, maxduty]. Любое отклонение от этой логики напрямую
+ * влияет на стабильность HV — будьте осторожны при правках.
  */
+
+static const uint8_t iduty       = 10;    // период интегрирования ошибки (кол-во вызовов)
+static const int8_t  maxerrduty  = 10;    // порог срабатывания
+static const int     nominallevel = 490;  // целевое значение АЦП
+static const uint8_t maxduty     = 220;   // ограничение скважности сверху
+static const uint8_t minduty     = 10;    // ограничение снизу
+
+static uint8_t idcounter = 0;             // текущая позиция в периоде интегрирования
+static int     duty_delta = 0;            // накопленная ошибка
+
+uint8_t r_duty;                           // актуальная скважность ШИМ
+int8_t  startup_delay = 10;               // задержка после старта, кратно 500мс
+
 void DCDCTick(void)
 {
-  int voltage;
+  int voltage = analogRead(A6);
+  if (startup_delay > 0) return;          // ждём стабилизации после запуска
 
-  voltage = analogRead(A6); // читаем значение анодного напряжения
-  if (startup_delay <= 0)
-  { // ждём первоначальной установки напряжения
-    if (++idcounter == iduty)
-    {                                      // пройден полный цикл усреднения
-      duty_delta = voltage - nominallevel; // текущая разница с идеальным напряжением - первая
-      idcounter = 0;                       // обновляем цикл усреднения
-    }
-    else
-      duty_delta += voltage - nominallevel; // интегрируем ошибку
-    if (duty_delta > 0 && duty_delta > maxerrduty)
-    {                 // измеренное напряжение выше идеального и превышает допустимую ошибку
-      duty_delta = 0; // обнуляем интегральную ошибку
-      if (r_duty > minduty)
-      {                        // если есть ещё возможность уменьшить длину активного импульса
-        setPWM(GEN, --r_duty); // уменьшаем длину активного импульса и устанавливаем новые значения ШИМ
-      }
-      else
-        setPWM(GEN, 0); // иначе выключаем генерацию
-    }
-    else if (duty_delta < 0 && duty_delta < -maxerrduty)
-    {                 // измеренное значение ниже идеального и превышает допустимую ошибку
-      duty_delta = 0; // обнуляем интегральную ошибку
-      if (++r_duty > maxduty)
-        r_duty = maxduty; // если нет возможности увеличить длину активного импульса - оставляем максимальную
-      else
-      {
-        setPWM(GEN, r_duty); // если есть возможности увеличить длину активного импульса - устанавливаем новый ШИМ
-      }
-    }
+  // интегрируем ошибку; по завершении периода сбрасываем счётчик
+  if (++idcounter == iduty)
+  {
+    duty_delta = voltage - nominallevel;
+    idcounter = 0;
+  }
+  else
+  {
+    duty_delta += voltage - nominallevel;
+  }
+
+  if (duty_delta > maxerrduty)
+  { // напряжение выше номинала — уменьшаем скважность
+    duty_delta = 0;
+    if (r_duty > minduty) setPWM(GEN, --r_duty);
+    else                  setPWM(GEN, 0);
+  }
+  else if (duty_delta < -maxerrduty)
+  { // напряжение ниже номинала — увеличиваем скважность
+    duty_delta = 0;
+    if (++r_duty > maxduty) r_duty = maxduty;
+    else                    setPWM(GEN, r_duty);
   }
 }

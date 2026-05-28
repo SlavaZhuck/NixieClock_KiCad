@@ -1,82 +1,71 @@
 
 #include "NixieClock_PE_v2.1.0.h"
 #include "timer2Minim.h"
-#include <GyverButton.h>
-#include <RTClib.h>
-#include <Adafruit_BME280.h>
 #include "global_externs.h"
 
 #include <EEPROM.h>
 
-/* Структурная функция начальной установки
- *  Входные параметры: нет
- *  Выходные параметры: нет
- */
-void setup()
+// перечисление пинов на вывод — настраиваются как OUTPUT одним циклом.
+// Размещено в PROGMEM, чтобы не занимать RAM.
+static const byte outputPins[] PROGMEM = {
+  DECODER0, DECODER1, DECODER2, DECODER3,
+  KEY0, KEY1, KEY2, KEY3, KEY4, KEY5,
+  PIEZO, GEN, DOT,
+  BACKLR, BACKLG, BACKLB,
+};
+
+/* Конфигурация GPIO. */
+static void setupPins(void)
 {
-  // случайное зерно для генератора случайных чисел
-  randomSeed(analogRead(6) + analogRead(7));
-
-  // настройка пинов на вход
   pinMode(ALARM_STOP, INPUT);
+  for (byte i = 0; i < sizeof(outputPins); i++)
+    pinMode(pgm_read_byte(&outputPins[i]), OUTPUT);
+  digitalWrite(GEN, 0); // устранение возможного «залипания» выхода генератора
+}
 
-  // настройка пинов на выход
-  pinMode(DECODER0, OUTPUT);
-  pinMode(DECODER1, OUTPUT);
-  pinMode(DECODER2, OUTPUT);
-  pinMode(DECODER3, OUTPUT);
-  pinMode(KEY0, OUTPUT);
-  pinMode(KEY1, OUTPUT);
-  pinMode(KEY2, OUTPUT);
-  pinMode(KEY3, OUTPUT);
+/* Параметры обработки кнопок (общий debounce и таймаут на кнопке Set). */
+static void setupButtons(void)
+{
+  btnSet.setTimeout(400);
+  btnSet.setDebounce(90);
+  btnL.setDebounce(90);
+  btnR.setDebounce(90);
+}
 
-  pinMode(KEY4, OUTPUT);
-  pinMode(KEY5, OUTPUT);
-
-  pinMode(PIEZO, OUTPUT);
-  pinMode(GEN, OUTPUT);
-  pinMode(DOT, OUTPUT);
-  pinMode(BACKLR, OUTPUT);
-  pinMode(BACKLG, OUTPUT);
-  pinMode(BACKLB, OUTPUT);
-
-  digitalWrite(GEN, 0);   // устранение возможного "залипания" выхода генератора
-  btnSet.setTimeout(400); // установка параметров библиотеки реагирования на кнопки
-  btnSet.setDebounce(90); // защитный период от дребезга
-  btnR.setDebounce(90);   // защитный период от дребезга
-  btnL.setDebounce(90);   // защитный период от дребезга
-
-  // ---------- RTC -----------
+/* Инициализация DS3231 и подключение прерывания SQW. */
+static void setupRtc(void)
+{
   rtc.begin();
   if (rtc.lostPower())
-  {
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  }
-  pinMode(RTC_SYNC, INPUT_PULLUP); // объявляем вход для синхросигнала RTC
-                                   // заставляем входной сигнал генерировать прерывания
+  pinMode(RTC_SYNC, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(RTC_SYNC), RTC_handler, RISING);
-  rtc.writeSqwPinMode(DS3231_SquareWave8kHz); // настраиваем DS3231 для вывода сигнала 8кГц
+  rtc.writeSqwPinMode(DS3231_SquareWave8kHz);
+}
 
-  // настройка быстрого чтения аналогового порта (mode 4)
+/* Перенастройка ATmega328 АЦП и таймеров под нужды проекта. */
+static void setupAvrHardware(void)
+{
+  // быстрое чтение АЦП (mode 4)
   sbi(ADCSRA, ADPS2);
   cbi(ADCSRA, ADPS1);
   cbi(ADCSRA, ADPS0);
-  analogRead(A6); // устранение шума
+  analogRead(A6); // первое чтение — устранение шума
   analogRead(A7);
-  // ------------------
-  syncFromRtc();
 
-  // задаем частоту ШИМ на 9 и 10 выводах 31 кГц
-  TCCR1B = (TCCR1B & 0b11111000) | 1; // ставим делитель 1
+  // ШИМ 31 кГц на D9/D10 (Timer1)
+  TCCR1B = (TCCR1B & 0b11111000) | 1;
 
-  // перенастраиваем частоту ШИМ на пинах 3 и 11 для соответствия таймеру 0
-  // Пины D3 и D11 - 980 Гц
-  TCCR2B = 0b00000011; // x32
+  // ШИМ ~980 Гц на D3/D11 (Timer2)
+  TCCR2B = 0b00000011; // делитель x32
   TCCR2A = 0b00000001; // phase correct
+}
 
-  // EEPROM
+/* Загрузка/инициализация настроек из EEPROM. */
+static void setupEeprom(void)
+{
   if (EEPROM.read(1023) != 103)
-  { // первый запуск
+  { // первый запуск — заполнить значениями по умолчанию
     EEPROM.put(1023, 103);
     EEPROM.put(FLIPEFF, flip_effect);
     EEPROM.put(LIGHTEFF, backL_mode);
@@ -97,38 +86,52 @@ void setup()
   EEPROM.get(BLCOLOR, backlColor);
   EEPROM.get(AUTOSHOWMEAS, auto_show_measurements);
   EEPROM.get(LASTADJMONTH, lastAdjustedMonth);
-  // первый запуск или повреждённое значение — синхронизируемся с текущим месяцем
-  // без применения сдвига (коррекция сработает на ближайшей смене месяца)
+
+  // повреждённое/неинициализированное значение — синхронизируемся с RTC
+  // (без применения сдвига; коррекция сработает при следующей смене месяца)
   if (lastAdjustedMonth < 1 || lastAdjustedMonth > 12)
   {
     lastAdjustedMonth = rtc.now().month();
     EEPROM.put(LASTADJMONTH, lastAdjustedMonth);
   }
+}
 
-  // включаем ШИМ
-  r_duty = DUTY;
-  setPWM(GEN, r_duty);
-
-  sendTime(hrs, mins, secs, indiDigits); // отправить время на индикаторы
-
-  changeBright(); // изменить яркость согласно времени суток
-
-  // стартовый период глюков
-  glitchTimer.setInterval(random(GLITCH_MIN * 1000L, GLITCH_MAX * 1000L));
-
-  // скорость режима при запуске
-  flipTimer.setInterval(flip_speed[flip_effect]);
-
-  // инициализация BME
+/* Поиск и настройка BME280 (две возможные I2C-адресации). */
+static void setupBme(void)
+{
   isBMEhere = bme.begin();
   if (!isBMEhere)
-  {
     isBMEhere = bme.begin(BME280_ADDRESS_ALTERNATE);
-  }
   if (isBMEhere)
     bme.setSampling(Adafruit_BME280::MODE_NORMAL,
                     Adafruit_BME280::SAMPLING_X16, // temperature
                     Adafruit_BME280::SAMPLING_X16, // pressure
                     Adafruit_BME280::SAMPLING_X16, // humidity
                     Adafruit_BME280::FILTER_X4);
+}
+
+/* Стартовая инициализация системы. */
+void setup()
+{
+  randomSeed(analogRead(6) + analogRead(7));
+
+  setupPins();
+  setupButtons();
+  setupRtc();
+  setupAvrHardware();
+  syncFromRtc();
+  setupEeprom();
+
+  // запуск ШИМ генератора анодного напряжения
+  r_duty = DUTY;
+  setPWM(GEN, r_duty);
+
+  sendTime(hrs, mins, secs, indiDigits);
+  changeBright();
+
+  // стартовый период между «глюками» и скорость текущего эффекта цифр
+  glitchTimer.setInterval(random(GLITCH_MIN * 1000L, GLITCH_MAX * 1000L));
+  flipTimer.setInterval(flip_speed[flip_effect]);
+
+  setupBme();
 }

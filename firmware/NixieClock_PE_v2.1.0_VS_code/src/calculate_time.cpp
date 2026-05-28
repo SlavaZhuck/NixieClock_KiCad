@@ -57,8 +57,6 @@ void calculateTime(boolean *dotBrightFlag_local, boolean *dotBrightDirection_loc
   *dotBrightCounter_local = 0;
   newSecFlag = true;
   secs++;
-  if (startup_delay)
-    startup_delay--;
 
   if (secs > 59)
   {
