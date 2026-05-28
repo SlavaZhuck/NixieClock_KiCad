@@ -538,7 +538,7 @@ static void enterShowTemp(boolean *chBL_local)
   autoTimer.setInterval(TEMP_SH_TIME);
   autoTimer.reset();
   dotSetMode(DM_FULL);
-  *chBL_local = true;
+  *chBL_local = false;
 }
 
 /* Переход к показу давления (из SHTEMP). */
@@ -550,7 +550,7 @@ static void enterShowPressure(boolean *chBL_local)
   dotSetMode(DM_NULL);
   autoTimer.setInterval(ATMOSPHERE_SH_TIME);
   autoTimer.reset();
-  *chBL_local = true;
+  *chBL_local = false;
 }
 
 /* Переход к показу влажности (из SHATM). */
@@ -561,7 +561,7 @@ static void enterShowHumidity(boolean *chBL_local)
   anodeStates = 0x30;
   autoTimer.setInterval(HUMIDITY_SH_TIME);
   autoTimer.reset();
-  *chBL_local = true;
+  *chBL_local = false;
 }
 
 /* Переход к показу времени будильника (из SHHUM, если будильник включён). */
