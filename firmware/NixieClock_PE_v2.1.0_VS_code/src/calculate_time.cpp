@@ -27,20 +27,19 @@ DateTime syncFromRtc()
   return now;
 }
 
-/* Применить накопленную поправку ADJUST_TIME при смене календарного месяца
- * (по данным RTC). Должна вызываться сразу после syncFromRtc(), которая уже
- * прочитала актуальное now.
+/* Применить накопленную поправку AUTO_ADJUST_TIME_VALUE при смене календарного
+ * месяца (по данным RTC). Устанавливает флаг monthAdjustPending — само смещение
+ * будет наложено на 30-й секунде (см. calculateTime), чтобы ±<30 с не вышло за
+ * границу минуты. Должна вызываться сразу после syncFromRtc().
  */
 static void applyMonthlyDriftCorrection(DateTime now)
 {
   byte currentMonth = now.month();
   if (currentMonth == lastAdjustedMonth) return;
 
-  if (lastAdjustedMonth >= 1 && lastAdjustedMonth <= 12 && ADJUST_TIME != 0)
-  {
-    rtc.adjust(now + TimeSpan((int32_t)ADJUST_TIME));
-    syncFromRtc();
-  }
+  if (lastAdjustedMonth >= 1 && lastAdjustedMonth <= 12 && autoAdjustTimeValue != 0)
+    monthAdjustPending = true;
+
   lastAdjustedMonth = currentMonth;
   EEPROM.put(LASTADJMONTH, lastAdjustedMonth);
 }
@@ -85,6 +84,15 @@ void calculateTime(boolean *dotBrightFlag_local, boolean *dotBrightDirection_loc
   {
     autoShowMeasurementsTimer.setInterval(10);
     autoShowMeasurementsTimer.reset();
+  }
+
+  // применить отложенную месячную поправку на 30-й секунде
+  if (secs == 30 && monthAdjustPending)
+  {
+    DateTime adjustNow = rtc.now();
+    rtc.adjust(adjustNow + TimeSpan((int32_t)autoAdjustTimeValue));
+    syncFromRtc();
+    monthAdjustPending = false;
   }
 
   if (newTimeFlag || newSecFlag)

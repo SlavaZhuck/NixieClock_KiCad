@@ -12,6 +12,8 @@ extern int8_t startup_delay;
 
 // автоподстройка по календарному месяцу
 extern byte lastAdjustedMonth;
+extern int8_t autoAdjustTimeValue;  // поправка кварца, с/мес (−99…+99)
+extern boolean monthAdjustPending;  // флаг: поправка ждёт 30-й секунды
 
 // функции синхронизации/обработки времени
 extern void RTC_handler(void);

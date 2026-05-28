@@ -35,6 +35,32 @@ void setNewTime(byte hours, byte minutes, byte seconds, byte newTimeLocal[])
   newTimeLocal[5] = (byte)seconds % 10;
 }
 
+/* Отображение значения AUTO_ADJUST_TIME_VALUE в разрядах 0-3:
+ *   разряды 0-1 — знак (00 = «+», 99 = «−»),
+ *   разряды 2-3 — абсолютное значение (00-99).
+ *   Разряды 4-5 гасятся.
+ */
+void sendAutoAdjust(int8_t val, volatile int8_t indiDigitsLocal[])
+{
+  byte absVal;
+  if (val < 0)
+  {
+    indiDigitsLocal[0] = 9; // знак «−»
+    indiDigitsLocal[1] = 9;
+    absVal = (byte)(-val);
+  }
+  else
+  {
+    indiDigitsLocal[0] = 0; // знак «+»
+    indiDigitsLocal[1] = 0;
+    absVal = (byte)val;
+  }
+  indiDigitsLocal[2] = absVal / 10;
+  indiDigitsLocal[3] = absVal % 10;
+  indiDigitsLocal[4] = 0;
+  indiDigitsLocal[5] = 0;
+}
+
 /* Отображение четырёхзначного года в первых четырёх разрядах
  *  (anodeStates = 0x0F).
  */

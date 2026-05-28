@@ -76,6 +76,7 @@ static void setupEeprom(void)
     EEPROM.put(BLCOLOR, 1);
     EEPROM.put(AUTOSHOWMEAS, 1);
     EEPROM.put(LASTADJMONTH, (byte)0);
+    EEPROM.put(AUTOADJVAL, (int8_t)0);
   }
   EEPROM.get(FLIPEFF, flip_effect);
   EEPROM.get(LIGHTEFF, backL_mode);
@@ -86,6 +87,7 @@ static void setupEeprom(void)
   EEPROM.get(BLCOLOR, backlColor);
   EEPROM.get(AUTOSHOWMEAS, auto_show_measurements);
   EEPROM.get(LASTADJMONTH, lastAdjustedMonth);
+  EEPROM.get(AUTOADJVAL, autoAdjustTimeValue);
 
   // повреждённое/неинициализированное значение — синхронизируемся с RTC
   // (без применения сдвига; коррекция сработает при следующей смене месяца)
@@ -93,6 +95,20 @@ static void setupEeprom(void)
   {
     lastAdjustedMonth = rtc.now().month();
     EEPROM.put(LASTADJMONTH, lastAdjustedMonth);
+  }
+  // если значение поправки повреждено — сбросить в 0
+  if (autoAdjustTimeValue < -99 || autoAdjustTimeValue > 99)
+  {
+    autoAdjustTimeValue = 0;
+    EEPROM.put(AUTOADJVAL, autoAdjustTimeValue);
+  }
+  // AUTOADJVAL добавлено в прошивке позже; при первом запуске новой прошивки
+  // EEPROM по адресу AUTOADJVAL содержит 0xFF (-1) — инициализируем в 0
+  if (EEPROM.read(1022) != 1)
+  {
+    EEPROM.put(1022, (byte)1);
+    autoAdjustTimeValue = 0;
+    EEPROM.put(AUTOADJVAL, autoAdjustTimeValue);
   }
 }
 

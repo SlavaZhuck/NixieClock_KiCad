@@ -12,6 +12,7 @@
 // прежний булев флаг (часы/минуты).
 enum SET_STAGE : byte
 {
+  SET_ADJUST, // (0) значение AUTO_ADJUST_TIME_VALUE (перед годом)
   SET_YEAR,
   SET_MONTH,
   SET_DAY,
@@ -21,7 +22,8 @@ enum SET_STAGE : byte
 };
 
 static boolean currentDigit = false;      // для SETALARM: false=часы, true=минуты
-static SET_STAGE setTimeStage = SET_YEAR; // для SETTIME
+static SET_STAGE setTimeStage = SET_ADJUST; // для SETTIME
+static int8_t changeAutoAdjust;           // редактируемое значение AUTO_ADJUST_TIME_VALUE
 
 static sensors_event_t temp_event, pressure_event, humidity_event;
 static boolean isFreeze = false;
@@ -143,6 +145,8 @@ void buttonsTick(boolean *showFlag_local, volatile unsigned int *SQW_counter_loc
     }
     else if (btnA.isClick()) // сохранение
     {
+      autoAdjustTimeValue = changeAutoAdjust;
+      EEPROM.put(AUTOADJVAL, autoAdjustTimeValue);
       hrs = changeHrs;
       mins = changeMins;
       secs = 0;
@@ -277,6 +281,7 @@ static void settingsTick()
         // карта моргающих разрядов по стадии
         switch (setTimeStage)
         {
+        case SET_ADJUST:
         case SET_YEAR:                anodeStates = 0x0; break;  // моргают все 4
         case SET_MONTH: case SET_HRS: anodeStates = 0x0C; break; // моргают левые 2
         case SET_DAY:   case SET_MIN: anodeStates = 0x03; break; // моргают правые 2
@@ -322,6 +327,9 @@ static void refreshSetTimeDisplay()
 {
   switch (setTimeStage)
   {
+  case SET_ADJUST:
+    sendAutoAdjust(changeAutoAdjust, indiDigits);
+    break;
   case SET_YEAR:
     sendYear(changeYear, indiDigits);
     break;
@@ -344,6 +352,14 @@ static void adjustSetTimeStage(int delta)
 {
   switch (setTimeStage)
   {
+  case SET_ADJUST:
+  {
+    int v = (int)changeAutoAdjust + delta;
+    if (v > 99)  v = 99;
+    if (v < -99) v = -99;
+    changeAutoAdjust = (int8_t)v;
+    break;
+  }
   case SET_YEAR:
   {
     int y = (int)changeYear + delta;
@@ -397,6 +413,7 @@ static void resetSetTimeStage()
 {
   switch (setTimeStage)
   {
+  case SET_ADJUST: changeAutoAdjust = 0; break;
   case SET_YEAR:  changeYear = 2026; break;
   case SET_MONTH: changeMonth = 1; break;
   case SET_DAY:   changeDay = 1; break;
@@ -502,8 +519,9 @@ static void showHumidity()
 static void enterSetTime(boolean *chBL_local)
 {
   anodeStates = 0x0F;
-  setTimeStage = SET_YEAR;
+  setTimeStage = SET_ADJUST;
   curMode = SETTIME;
+  changeAutoAdjust = autoAdjustTimeValue;
   DateTime now = rtc.now();
   changeYear = now.year();
   changeMonth = now.month();

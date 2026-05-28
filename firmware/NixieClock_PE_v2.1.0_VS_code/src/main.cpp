@@ -75,6 +75,8 @@ volatile boolean halfsecond = false;   // флаг прохождения пол
 
 int8_t hrs, mins, secs;
 byte lastAdjustedMonth = 0;            // месяц последней автоподстройки (0 = не задано)
+int8_t autoAdjustTimeValue = 0;        // поправка кварца, с/мес (−99…+99)
+boolean monthAdjustPending = false;    // флаг: поправка обнаружена, ждём 30-й секунды
 
 // ==========================================================================
 //  Будильник
